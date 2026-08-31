@@ -1,0 +1,8 @@
+.alchaLoginMain {
+  ::ng-deep .altcha-main {
+    max-width: 100%;
+  }
+  ::ng-deep .mat-mdc-unelevated-button:not(:disabled){
+    background-color: #af4fb8;
+  }
+}
