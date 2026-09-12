@@ -30,7 +30,7 @@ export const logIn = async (req, res) => {
           ),
         );
     } else {
-      throw "Usernam eis required";
+      throw "Username is required";
     }
   } catch (error) {
     res.status(500).json(createResponse(500, {}, error));

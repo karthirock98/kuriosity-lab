@@ -1,31 +1,70 @@
-<form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
+<!-- <form (ngSubmit)="onSubmit(contactForm)" #contactForm="ngForm">
+  <input type="text" name="userName" ngModel placeholder="Your Name" required />
 
-  <input
-    type="text"
-    name="userName"
-    ngModel
-    placeholder="Your Name"
-    required
-  />
-
-  <input
-    type="email"
-    name="email"
-    ngModel
-    placeholder="Your Email"
-    required
-  />
+  <input type="email" name="email" ngModel placeholder="Your Email" required />
 
   <altcha-widget
-  (statechange)="onAltchaStateChange($event)"
-    challenge="http://localhost:3333/auth/get-altcha-challenge">
+    (statechange)="onAltchaStateChange($event)"
+    challenge="http://localhost:3333/auth/get-altcha-challenge"
+  >
   </altcha-widget>
 
-  <button type="submit">
-    Submit
-  </button>
-
-</form>
-<!-- <div [formGroup]="altchAuthonticationForm">
-
-</div> -->
+  <button type="submit">Submit</button>
+</form> -->
+<div class="h-screen bg-linear-to-r from-[#c71ed6] via-[#b17fb6] to-[#efe5f0] alchaLoginMain">
+  <div [formGroup]="altchAuthonticatedLoginForm" class="flex justify-between h-screen">
+    <section class="flex tems-center w-[50%] h-full">
+      @if (!altchaverifyClicked) {
+        <img [src]="lockImagePath" alt="unlock-image" class="p-6 rounded-xl" />
+      }
+      @if (altchaverifyClicked) {
+        <img [src]="unlockImagePath" alt="unlock-image" class="p-6 rounded-xl" />
+      }
+    </section>
+    <section class="flex justify-center items-center w-[50%] h-full p-6 flex-col gap-2">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="My Name" formControlName="userName" />
+        @if (
+          altchAuthonticatedLoginForm?.get('userName')?.hasError('required') &&
+          altchAuthonticatedLoginForm.get('userName')?.touched
+        ) {
+          <mat-error>User name is Required!</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Ex: abc@email.com" formControlName="email" type="email" />
+        @if (
+          altchAuthonticatedLoginForm?.get('email')?.hasError('required') &&
+          altchAuthonticatedLoginForm.get('email')?.touched
+        ) {
+          <mat-error>Email is Required</mat-error>
+        }
+        @if (
+          altchAuthonticatedLoginForm?.get('email')?.hasError('email') &&
+          altchAuthonticatedLoginForm.get('email')?.touched
+        ) {
+          <mat-error>Please enter Valid Email!</mat-error>
+        }
+      </mat-form-field>
+      <altcha-widget
+        (statechange)="onAltchaStateChange($event)"
+        challenge="http://localhost:3333/auth/get-altcha-challenge"
+        class="w-full"
+      >
+      </altcha-widget>
+      @if (!altchaverifyClicked) {
+        <mat-error>Please click to vefify!</mat-error>
+      }
+      <button
+        matButton="filled"
+        class="w-full"
+        filled-container-color="#b17fb6"
+        (click)="submitTheLogin()"
+      >
+        Submit
+      </button>
+    </section>
+  </div>
+</div>
