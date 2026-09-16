@@ -14,6 +14,7 @@ import galaxy2 from './assets/galaxy-2.jpg'
 import galaxy3 from './assets/galaxy-3.jpg'
 import "altcha/themes/aqua.css";
 import { Presets, SplitFlap } from 'react-split-flap'
+import { loginUser } from "./services/auth.service";
 
 function App() {
   // Blinking stars
@@ -78,16 +79,23 @@ function App() {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3333/auth/login",
+      const response: any = await loginUser(
         {
-          username: "test",
+          userName: "test",
           password: "test123",
           altcha: altchaPayload,
         }
       );
 
-      console.log(response.data);
+      if (response?.data?.statusCode === 200) {
+        alert("All OK");
+      } else {
+        setAltchaPayload("")
+        const altcha = document.querySelector('altcha-widget');
+        altcha?.reset();
+      }
+
+      console.log(response?.data);
     } catch (error) {
       console.error(error);
     }
@@ -108,7 +116,7 @@ function App() {
 
             <altcha-widget
               theme="aqua"
-              challenge="http://localhost:3333/auth/altcha/challenge"
+              challenge="http://localhost:3333/auth/get-altcha-challenge"
               ref={(element) => {
                 if (element) {
                   element.addEventListener(
