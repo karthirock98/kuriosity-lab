@@ -1,0 +1,56 @@
+.main-cont {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #080b0f;
+}
+
+.company-logo-cont {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* Glass between logos and content */
+.frosted-glass {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: rgba(160, 34, 34, 0.03);
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(10px);
+
+    pointer-events: none;
+}
+
+.page-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    justify-content: center;
+
+    .input-domain {
+        width: 25%;
+    }
+}
+
+.roaming-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.roaming-image {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    will-change: transform;
+}

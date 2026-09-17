@@ -13,3 +13,11 @@ export const loginUser = async (payload: any) => {
         throw error;
     }
 };
+
+export const authService = {
+    isAuthenticated() {
+        return true;
+    }
+
+    
+}
