@@ -1,116 +1,134 @@
 .main-cont {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+
+    // ORIGINAL BACKGROUND
     background:
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(72, 86, 180, 0.18),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 20%,
-            rgba(120, 60, 160, 0.14),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(40, 90, 160, 0.12),
-            transparent 35%
-        ),
-        #080b14;
+        radial-gradient(circle at 20% 20%,
+            rgba(60, 80, 140, 0.18),
+            transparent 35%),
+        radial-gradient(circle at 80% 80%,
+            rgba(100, 60, 150, 0.14),
+            transparent 35%),
+        #080b0f;
 }
 
-/* =========================================================
-   Ambient background
-   ========================================================= */
-
-.main-cont::before,
-.main-cont::after {
-    content: "";
-    position: absolute;
-
-    width: 600px;
-    height: 600px;
-
-    border-radius: 50%;
-    // filter: blur(100px);
-
-    pointer-events: none;
-    z-index: 0;
-}
-
-.main-cont::before {
-    left: -250px;
-    top: -250px;
-
-    background: rgba(60, 90, 255, 0.07);
-
-    animation: ambient-left 18s ease-in-out infinite alternate;
-}
-
-.main-cont::after {
-    right: -250px;
-    bottom: -250px;
-
-    background: rgba(120, 70, 255, 0.06);
-
-    animation: ambient-right 22s ease-in-out infinite alternate;
-}
-
-@keyframes ambient-left {
-    from {
-        transform: translate(0, 0);
-    }
-
-    to {
-        transform: translate(250px, 180px);
-    }
-}
-
-@keyframes ambient-right {
-    from {
-        transform: translate(0, 0);
-    }
-
-    to {
-        transform: translate(-200px, -150px);
-    }
-}
-
-/* =========================================================
-   Company logos
-   ========================================================= */
+/* =========================================
+   LOGO LAYER
+   ========================================= */
 
 .company-logo-cont {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
-/* =========================================================
-   Frosted glass
-   ========================================================= */
-
-.frosted-glass {
     position: absolute;
     inset: 0;
 
     z-index: 1;
 
-    background: rgba(255, 255, 255, 0.012);
+    overflow: hidden;
+}
 
-    // backdrop-filter: blur(2px);
-    // -webkit-backdrop-filter: blur(2px);
+.roaming-container {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+}
+
+.roaming-image {
+    position: absolute;
+
+    width: 110px;
+
+    object-fit: contain;
+
+    pointer-events: none;
+    user-select: none;
+
+    will-change: transform;
+
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+
+/* =========================================
+   GLASS LAYER
+   ========================================= */
+
+.frosted-glass {
+    position: absolute;
+    inset: 0;
+
+    z-index: 2;
+
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(0.3px);
 
     pointer-events: none;
 }
 
-/* =========================================================
-   Main content
-   ========================================================= */
+
+/* =========================================
+   GLASS REFLECTION
+   ========================================= */
+
+.frosted-glass::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(115deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.035) 35%,
+            transparent 50%);
+
+    opacity: 1;
+}
+
+
+/* =========================================
+   SUBTLE CENTER LIGHT
+   ========================================= */
+
+.frosted-glass::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 700px;
+    height: 400px;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(ellipse,
+            rgba(100, 130, 200, 0.09),
+            transparent 70%);
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   CONTENT
+   ========================================= */
 
 .page-content {
     position: relative;
 
-    z-index: 2;
+    z-index: 3;
 
     width: 100%;
     min-height: 100vh;
@@ -121,126 +139,372 @@
 
     isolation: isolate;
 
-    /* Center glow */
-    &::before {
-        content: "";
-
-        position: absolute;
-
-        width: 650px;
-        height: 300px;
-
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-
-        background: radial-gradient(
-            ellipse,
-            rgba(70, 100, 255, 0.09),
-            transparent 70%
-        );
-
-        filter: blur(30px);
-
-        animation: center-breathe 6s ease-in-out infinite alternate;
-
-        pointer-events: none;
-
-        z-index: -1;
-    }
-
-    .input-domain {
-        position: relative;
-
-        width: min(30%, 600px);
-
-        min-width: 320px;
-
-        height: 64px;
-
-        background: linear-gradient(
-            127deg,
-            rgba(81, 102, 150, 0.7) 0%,
-            rgba(15, 25, 46, 0.55) 100%
-        );
-
-        border: 1px solid rgba(160, 180, 220, 0.35);
-
-        border-radius: 999px;
-
-        font-size: 20px;
-
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-
-        box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.04),
-            0 10px 40px rgba(0, 0, 0, 0.25);
-
-        color: rgba(255, 255, 255, 0.8);
-
-        z-index: 2;
-
-        transition:
-            border-color 0.3s ease,
-            box-shadow 0.3s ease,
-            background 0.3s ease;
-
-        &:focus {
-            border-color: rgba(130, 160, 220, 0.65);
-
-            box-shadow:
-                0 0 0 3px rgba(80, 110, 180, 0.12),
-                0 15px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        &::placeholder {
-            color: rgba(220, 225, 235, 0.65);
-        }
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        align-items: center;
     }
 }
 
-@keyframes center-breathe {
-    from {
-        opacity: 0.35;
-        transform: translate(-50%, -50%) scale(0.95);
-    }
 
-    to {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(1.05);
+/* =========================================
+   DOMAIN INPUT
+   ========================================= */
+
+.input-domain {
+    position: relative;
+
+    width: min(30%, 600px);
+    min-width: 400px;
+
+    height: 64px;
+
+    padding: 0 28px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.10),
+            rgba(255, 255, 255, 0.035));
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    border-radius: 999px;
+
+    font-size: 20px;
+
+    color: rgba(255, 255, 255, 0.9);
+
+    /*
+     * This is the important glass effect
+     * for the INPUT itself.
+     */
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+
+        inset 0 -1px 0 rgba(255, 255, 255, 0.03),
+
+        0 20px 60px rgba(0, 0, 0, 0.35);
+
+    outline: none;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+
+.input-domain:hover {
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 255, 255, 0.045));
+
+    border-color:
+        rgba(255, 255, 255, 0.22);
+}
+
+
+.input-domain:focus {
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.13),
+            rgba(255, 255, 255, 0.05));
+
+    border-color:
+        rgba(170, 190, 230, 0.4);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+
+        0 0 0 3px rgba(120, 150, 220, 0.08),
+
+        0 25px 70px rgba(0, 0, 0, 0.4);
+}
+
+
+.input-domain::placeholder {
+    color:
+        rgba(230, 235, 245, 0.6);
+}
+
+.domain-results {
+    width: min(1100px, 90vw);
+    margin: 35px auto 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    max-height: 55vh;
+    overflow-y: auto;
+
+    padding: 4px 8px 4px 4px;
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+/* Chrome / Edge / Safari */
+.domain-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.domain-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.domain-results::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+
+    border: 1px solid transparent;
+    background-clip: padding-box;
+
+    transition: background 0.2s ease;
+}
+
+.domain-results::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.30);
+}
+
+.domain-results::-webkit-scrollbar-button {
+    display: none;
+}
+
+.domain-result-card {
+    position: relative;
+
+    width: 100%;
+    min-height: 110px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 18px 20px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.075),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    transition:
+        transform 180ms ease,
+        border-color 180ms ease,
+        background 180ms ease;
+
+    &:hover {
+        transform: translateY(-2px);
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.10),
+                rgba(255, 255, 255, 0.035)
+            );
+
+        border-color: rgba(255, 255, 255, 0.16);
     }
 }
 
-/* =========================================================
-   Roaming container
-   ========================================================= */
 
-.roaming-container {
-    position: absolute;
-    inset: 0;
+/* =====================================================
+   DOMAIN
+===================================================== */
+
+.domain-result-info {
+    width: 270px;
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.domain-name {
+    display: flex;
+    align-items: baseline;
+    gap: 1px;
+
+    white-space: nowrap;
+}
+
+.domain-main {
+    font-size: 27px;
+    font-weight: 650;
+    letter-spacing: -0.8px;
+
+    color: rgba(255, 255, 255, 0.94);
+}
+
+.domain-tld {
+    font-size: 27px;
+    font-weight: 400;
+
+    color: rgba(255, 255, 255, 0.42);
+}
+
+.domain-status {
+    width: fit-content;
+
+    padding: 4px 9px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+
+    &.available {
+        color: rgba(154, 255, 205, 0.9);
+        background: rgba(70, 220, 140, 0.10);
+        border: 1px solid rgba(70, 220, 140, 0.16);
+    }
+
+    &.unavailable {
+        color: rgba(255, 150, 150, 0.9);
+        background: rgba(255, 80, 80, 0.08);
+        border: 1px solid rgba(255, 80, 80, 0.15);
+    }
+}
+
+
+/* =====================================================
+   VERTICAL SEPARATOR
+===================================================== */
+
+.domain-divider {
+    width: 1px;
+    height: 58px;
+
+    margin: 0 25px;
+
+    background: rgba(255, 255, 255, 0.09);
+}
+
+
+/* =====================================================
+   VENDORS
+===================================================== */
+
+.vendor-list {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+
+    gap: 35px;
 
     overflow: hidden;
 }
 
-/* =========================================================
-   Logos
-   ========================================================= */
+.vendor-price {
+    min-width: 145px;
 
-.roaming-image {
-    position: absolute;
+    display: flex;
+    flex-direction: column;
 
-    width: 150px;
+    gap: 3px;
+}
 
-    object-fit: contain;
+.vendor-name {
+    font-size: 12px;
+    font-weight: 600;
 
-    opacity: 0.7;
+    text-transform: capitalize;
 
-    pointer-events: none;
-    user-select: none;
+    color: rgba(255, 255, 255, 0.48);
+}
 
-    will-change: transform;
+.vendor-price-value {
+    font-size: 19px;
+    font-weight: 650;
 
-    filter: blur(0.8px);
+    color: rgba(255, 255, 255, 0.92);
+
+    span {
+        margin-left: 3px;
+
+        font-size: 11px;
+        font-weight: 400;
+
+        color: rgba(255, 255, 255, 0.35);
+    }
+}
+
+.vendor-renewal {
+    font-size: 10px;
+
+    color: rgba(255, 255, 255, 0.25);
+}
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+.domain-action {
+    margin-left: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-button {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 17px;
+
+    transition:
+        background 180ms ease,
+        transform 180ms ease,
+        border-color 180ms ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.10);
+
+        border-color: rgba(255, 255, 255, 0.18);
+
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(0.96);
+    }
 }

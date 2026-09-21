@@ -6,7 +6,7 @@ const baseImages = Object.values(companyLogos);
 
 // Show 30 logos
 const images = Array.from(
-    { length: 30 },
+    { length: 40 },
     (_, index) => baseImages[index % baseImages.length]
 );
 
@@ -194,8 +194,8 @@ const RoamingImages = () => {
 
             const opacity =
                 gsap.utils.random(
-                    0.15,
-                    0.3
+                    0.7,
+                    0.9
                 );
 
             const rotation =
