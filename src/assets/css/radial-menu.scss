@@ -1,0 +1,99 @@
+.radial-menu {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  width: 180px;
+  height: 180px;
+  z-index: 99;
+}
+
+.radial-menu input {
+  display: none;
+}
+
+/* Main button */
+.main {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+  background: rgb(69, 69, 69);
+  color: #dcdcdc;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 26px;
+  cursor: pointer;
+
+  z-index: 10;
+}
+
+/* Options */
+.item {
+  position: absolute;
+
+  right: 6px;
+  bottom: 6px;
+
+//   width: 52px;
+  height: 52px;
+
+//   border-radius: 50%;
+
+  background: #292d30;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transform: translate(0, 0) scale(0.2);
+
+  transition:
+    transform 0.45s cubic-bezier(.16, 1, .3, 1),
+    opacity 0.2s ease;
+}
+
+
+/* ==========================
+   COMPACT CURVED FAN
+   ========================== */
+
+
+.item {
+height: auto;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 12px;
+    border: 1px solid aliceblue;
+}
+
+#toggle:checked ~ .item-1 {
+    opacity: 1;
+  transform: translate(-112px, 6px) scale(1)
+}
+
+#toggle:checked ~ .item-2 {
+    opacity: 1;
+  transform: translate(-72px, -40px) scale(1);
+}
+
+#toggle:checked ~ .item-3 {
+    opacity: 1;
+  transform: translate(-36px, -86px) scale(1);
+}
+
+#toggle:checked ~ .item-4 {
+    opacity: 1;
+  transform: translate(30px, -124px) scale(1);
+}

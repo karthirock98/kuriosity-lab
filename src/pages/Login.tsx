@@ -12,10 +12,12 @@ import galaxy2 from '../assets/galaxy-2.jpg'
 import galaxy3 from '../assets/galaxy-3.jpg'
 import "altcha/themes/aqua.css";
 import { Presets, SplitFlap } from 'react-split-flap'
-import { loginUser } from "../services/auth.service";
+import { authService, loginUser, setSession } from "../services/auth.service";
 import { Input } from "@/components/ui/input";
-import { Button } from "@base-ui/react/button";
 import { useNavigate } from "react-router-dom";
+import RadialMenu from "@/components/ui/RadialMenu";
+import { Button } from "@/components/ui/button";
+import NavigationMenuComp from "@/components/ui/NavigationMenu";
 
 function Login() {
     const navigation = useNavigate();
@@ -90,7 +92,7 @@ function Login() {
       );
 
       if (response?.data?.statusCode === 200) {
-        alert("All OK");
+        setSession("DUMMY")
         navigation("domain-search")
       } else {
         setAltchaPayload("")
@@ -131,9 +133,9 @@ function Login() {
             />
 
             <Button
-              variant="default"
               onClick={login}
               disabled={!altchaPayload}
+              variant={"default"}
             >
               Login
             </Button>
@@ -160,6 +162,14 @@ function Login() {
           </div>
         </div>
       </div>
+      <RadialMenu items={
+        [
+          "React Flip Flap",
+          "Embla Carousel",
+          "Altcha Captcha"
+        ]
+      } />
+     
     </>
   );
 }
