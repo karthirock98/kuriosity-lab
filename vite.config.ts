@@ -11,4 +11,14 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, './src')
     },
   },
+   server: {
+        proxy: {
+            "/quotes-api": {
+                target: "https://indian-quotes-api.vercel.app",
+                changeOrigin: true,
+                rewrite: (path) =>
+                    path.replace(/^\/quotes-api/, ""),
+            },
+        },
+    },
 })

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import RadialMenu from "@/components/ui/RadialMenu";
 import { Button } from "@/components/ui/button";
 import NavigationMenuComp from "@/components/ui/NavigationMenu";
+import QuoteBanner from "@/components/ui/QuoteBanner";
 
 function Login() {
     const navigation = useNavigate();
@@ -145,12 +146,13 @@ function Login() {
 
         <div className="flex flex-col items-center w-full justify-center">
           <div className="embla">
-            <div className="embla__viewport" ref={emblaRef}>
+            <div className="embla__viewport relative" ref={emblaRef}>
               <div className="embla__container">
                 <div className="embla__slide"><img src={galaxy} /></div>
                 <div className="embla__slide"><img src={galaxy2} /></div>
                 <div className="embla__slide"><img src={galaxy3} /></div>
               </div>
+              <QuoteBanner/>
             </div>
 
             {/* <button className="embla__prev" onClick={goToPrev}>
@@ -159,6 +161,7 @@ function Login() {
             <button className="embla__next" onClick={goToNext}>
               Scroll to next
             </button> */}
+          
           </div>
         </div>
       </div>
@@ -169,7 +172,6 @@ function Login() {
           "Altcha Captcha"
         ]
       } />
-     
     </>
   );
 }
