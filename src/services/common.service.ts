@@ -29,10 +29,10 @@ export const getTLDs = async () => {
 
 // get random indian quote
 
-export const getQuote = async() => {
+export const getQuote = async () => {
     // const res =  await axios.get("https://indian-quotes-api.vercel.app/api/quotes/random");
     // console.log(res.data);
     const response = await fetch('/quotes-api/api/quotes/random');
-const data = await response.json();
-    console.log(data);
+    const data = await response.json();
+    return data;
 }

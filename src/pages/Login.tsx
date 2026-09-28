@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../App.css";
 
 
@@ -18,10 +18,11 @@ import { useNavigate } from "react-router-dom";
 import RadialMenu from "@/components/ui/RadialMenu";
 import { Button } from "@/components/ui/button";
 import NavigationMenuComp from "@/components/ui/NavigationMenu";
-import QuoteBanner from "@/components/ui/QuoteBanner";
+import QuoteBanner, { type QuoteBannerRef } from "@/components/ui/QuoteBanner";
 
 function Login() {
     const navigation = useNavigate();
+    const quoteRef = useRef<QuoteBannerRef>(null);
   // Blinking stars
   useEffect(() => {
     const stars = document.querySelector(".stars");
@@ -53,10 +54,19 @@ function Login() {
   }, []);
 
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, axis: 'y' }, [Autoplay()])
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, axis: 'y' }, [Autoplay(
+    {
+      delay: 10000,
+      stopOnInteraction: false
+    }
+  )])
   useEffect(() => {
     if (!emblaApi) return
     emblaApi.plugins().autoplay?.play()
+
+    emblaApi.on("settle", () => {
+      quoteRef.current?.refreshQuote();
+    })
   }, [emblaApi])
 
   const goToPrev = () => emblaApi?.scrollPrev()
@@ -152,7 +162,7 @@ function Login() {
                 <div className="embla__slide"><img src={galaxy2} /></div>
                 <div className="embla__slide"><img src={galaxy3} /></div>
               </div>
-              <QuoteBanner/>
+              <QuoteBanner ref={quoteRef} />
             </div>
 
             {/* <button className="embla__prev" onClick={goToPrev}>
@@ -169,7 +179,8 @@ function Login() {
         [
           "React Flip Flap",
           "Embla Carousel",
-          "Altcha Captcha"
+          "Altcha Captcha",
+          "IndianQuotes API"
         ]
       } />
     </>
