@@ -1,0 +1,74 @@
+.joke-container {
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+}
+
+
+/* Joke icon */
+
+.joke-icon {
+    width: 30px;
+    // height: 50px;
+
+    border: none;
+    background: transparent;
+    padding: 0;
+
+    cursor: pointer;
+}
+
+.joke-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+/* Tooltip to the RIGHT */
+
+.joke-tooltip {
+    position: absolute;
+
+    left: calc(100% + 12px);
+    top: -18%;
+
+    transform: translateY(-50%);
+
+    width: 320px;
+
+    padding: 14px 16px;
+
+    border-radius: 14px;
+
+    background: rgba(20, 24, 28, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    color: white;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    white-space: pre-line;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+    z-index: 100;
+
+    animation: jokeIn 0.25s ease-out;
+}
+
+@keyframes jokeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-8px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0) scale(1);
+    }
+}

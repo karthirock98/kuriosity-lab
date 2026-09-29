@@ -1,0 +1,101 @@
+.quote-banner-main {
+    display: flex;
+    flex-direction: column;
+
+    width: 400px;
+    min-height: 100px;
+
+    padding: 18px 20px;
+
+    box-sizing: border-box;
+
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: rgba(255, 255, 255, 0.11);
+
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    backdrop-filter: blur(9.8px);
+    -webkit-backdrop-filter: blur(9.8px);
+
+    color: #fff;
+}
+
+
+/* Quote icon */
+
+.quote-banner-icon {
+    width: 18px;
+    height: auto;
+
+    margin-bottom: 8px;
+
+    opacity: 0.65;
+}
+
+
+/* Quote */
+
+.quote-banner-quote {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: rgba(255, 255, 255, 0.92);
+
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.55;
+
+    letter-spacing: 0.1px;
+
+    // Makes long quotes wrap nicely
+    word-break: break-word;
+}
+
+
+/* Author + company */
+
+.quote-banner-author {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* Author */
+
+.quote-banner-author-name {
+    color: rgba(255, 255, 255, 0.9);
+
+    font-weight: 600;
+}
+
+
+/* Dot */
+
+.quote-banner-separator {
+    color: rgba(255, 255, 255, 0.4);
+
+    font-size: 12px;
+}
+
+
+/* Company */
+
+.quote-banner-company {
+    color: rgba(255, 255, 255, 0.55);
+
+    font-weight: 400;
+}
