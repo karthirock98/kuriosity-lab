@@ -3,6 +3,7 @@ import "dotenv/config";
 import express from "express";
 import auth_routers from "./src/routes/auth-routes.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 const app_init = express();
 
 app_init.use(
@@ -15,6 +16,7 @@ app_init.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+app_init.use(cookieParser())
 app_init.use(express.json());
 app_init.use(express.urlencoded({ extended: true }));
 

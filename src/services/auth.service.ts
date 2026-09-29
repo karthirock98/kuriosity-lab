@@ -6,7 +6,8 @@ export const loginUser = async (payload: any) => {
     try {
         const res = await axios.post(
             `${BASE_URL}/auth/login`,
-            payload
+            payload,
+            { withCredentials: true }
         );
 
         return res;
@@ -17,12 +18,12 @@ export const loginUser = async (payload: any) => {
 
 export const authService = {
     isAuthenticated() {
-         const token = sessionStorage.getItem(APP_CONSTANTS.TOKEN);
-         if(token){
+        const token = sessionStorage.getItem(APP_CONSTANTS.TOKEN);
+        if (token) {
             return true;
-         }else{
+        } else {
             return false;
-         }
+        }
     }
 }
 
