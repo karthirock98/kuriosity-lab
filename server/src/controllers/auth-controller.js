@@ -9,6 +9,7 @@ export const logOut = async (req, res) => {
       const decryptCookie = await decrypt(req.cookies.auth);
       if (decryptCookie) {
         // if (Date.now() > decryptCookie.expiresAt) {
+        res.clearCookie("auth");
         return res.json({
           statusCode: "200",
           data: null,
