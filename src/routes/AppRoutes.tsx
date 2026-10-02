@@ -3,6 +3,7 @@ import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "@/pages/Login";
 import DomainFinder from "@/pages/domain-finder";
+import Unsplash from "@/pages/Unsplash";
 
 const AppRoutes = () => {
     return (
@@ -12,6 +13,7 @@ const AppRoutes = () => {
             </Route>
             <Route element={<ProtectedRoute />}>
                 <Route path="/domain-search" element={<DomainFinder />} />
+                <Route path="/unsplash" element={<Unsplash />} />
             </Route>
             <Route path="/" element={<Login />} />
         </Routes>

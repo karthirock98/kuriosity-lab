@@ -71,7 +71,7 @@ export const getProfile = async (req, res) => {
       .json(
         createResponse(200, { userName: "Sivakarthikeyan" }, "Success", ""),
       );
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const isAuthenticated = async (req, res, next) => {
@@ -103,7 +103,10 @@ export const isAuthenticated = async (req, res, next) => {
 
     next();
   } catch (error) {
-    // return false;
-    exit();
+    res
+      .status(401)
+      .json(
+        createResponse(401, {}),
+      );
   }
 };
