@@ -104,7 +104,7 @@ function Login() {
 
       if (response?.data?.statusCode === 200) {
         setSession("DUMMY")
-        navigation("domain-search")
+        navigation("/unsplash")
       } else {
         setAltchaPayload("")
         const altcha = document.querySelector('altcha-widget');

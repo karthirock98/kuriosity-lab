@@ -21,6 +21,7 @@ import { Spinner } from "@/components/ui/spinner";
 import RadialMenu from "@/components/ui/RadialMenu";
 import JokeBanner from "@/components/ui/JokeBanner";
 import NavigationMenuComp from "@/components/ui/NavigationMenu";
+import axios from "axios";
 
 const DomainFinder = () => {
     const { control, watch, setValue } = useForm({
@@ -94,6 +95,11 @@ const DomainFinder = () => {
                 {/* Main content */}
 
                 <div className="page-content">
+                    <Button onClick={() => {
+                        axios.get("http://localhost:3333/auth/user/profile", { withCredentials: true }).then((res) => {
+                            console.log(res);
+                        })
+                    }} >Hello</Button>
                     <div className="content">
                         <Controller
                             name="domain-search"
@@ -261,7 +267,7 @@ const DomainFinder = () => {
                 ]
             } />
             <JokeBanner />
-            <div className="absolute top-0 z-50">
+            <div className="absolute top-0 right-0 z-50">
 
                 <NavigationMenuComp />
             </div>

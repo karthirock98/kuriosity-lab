@@ -4,11 +4,12 @@ import { createResponse } from "../utils/common-utils.js";
 
 export const logOut = async (req, res) => {
   try {
-    console.log(req.cookies)
+    console.log(req.cookies);
     if (req.cookies.auth) {
       const decryptCookie = await decrypt(req.cookies.auth);
       if (decryptCookie) {
         // if (Date.now() > decryptCookie.expiresAt) {
+        res.clearCookie("auth");
         return res.json({
           statusCode: "200",
           data: null,
@@ -33,17 +34,18 @@ export const logIn = async (req, res) => {
   try {
     const body = req.body;
     if (body.userName) {
-      const COOKIE_EXPIRY_TIME = Number(process.env.COOKIE_EXPIRY_TIME) * 60 * 1000;
+      const COOKIE_EXPIRY_TIME =
+        Number(process.env.COOKIE_EXPIRY_TIME) * 60 * 1000;
       const cookie = await encrypt({
         username: body?.userName,
-        expiresAt: Date.now() + COOKIE_EXPIRY_TIME
-      })
+        expiresAt: Date.now() + COOKIE_EXPIRY_TIME,
+      });
       res.cookie("auth", cookie, {
         httpOnly: true,
         secure: false,
         sameSite: "lax",
-        maxAge: COOKIE_EXPIRY_TIME
-      })
+        maxAge: COOKIE_EXPIRY_TIME,
+      });
       res
         .status(200)
         .json(
@@ -62,44 +64,49 @@ export const logIn = async (req, res) => {
   }
 };
 
-
 export const getProfile = async (req, res) => {
   try {
     res
       .status(200)
       .json(
-        createResponse(
-          200,
-          { userName: "Sivakarthikeyan" },
-          "Success",
-          "",
-        ),
+        createResponse(200, { userName: "Sivakarthikeyan" }, "Success", ""),
       );
-  } catch (error) {
-
-  }
-}
+  } catch (error) { }
+};
 
 export const isAuthenticated = async (req, res, next) => {
   try {
+    const exit = () => {
+      res
+        .status(401)
+        .json(
+          createResponse(401, {}),
+        );
+    };
     const authCookie = req.cookies?.auth;
 
     if (!authCookie) {
-      return false;
+      // return false;
+      exit();
     }
 
     const decryptedCookie = await decrypt(authCookie);
 
     if (!decryptedCookie?.expiresAt) {
-      return false;
+      // return false;.
+      exit();
     }
 
     if (Date.now() > decryptedCookie.expiresAt) {
-      return false;
+      exit()
     }
 
-    next()
+    next();
   } catch (error) {
-    return false;
+    res
+      .status(401)
+      .json(
+        createResponse(401, {}),
+      );
   }
 };

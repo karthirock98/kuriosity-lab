@@ -22,23 +22,19 @@ const NavigationMenuComp = () => {
                 {/* Products */}
                 <NavigationMenuItem>
                     <NavigationMenuTrigger>
-                        Products
+                        Menu
                     </NavigationMenuTrigger>
 
                     <NavigationMenuContent>
-                        <NavigationMenuLink>
+                        {/* <NavigationMenuLink>
                             Product One
-                        </NavigationMenuLink>
-
-                        <NavigationMenuLink>
-                            Product Two
-                        </NavigationMenuLink>
+                        </NavigationMenuLink> */}
 
                         <NavigationMenuItem>
                             <button
                                 type="button"
                                 onClick={handleLogout}
-                                className="..."
+                                className="cursor-pointer"
                             >
                                 Logout
                             </button>

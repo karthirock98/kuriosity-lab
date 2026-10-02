@@ -36,5 +36,6 @@ export const getToken = () => {
 }
 
 export const LogOut = () => {
-    sessionStorage.clear()
+    sessionStorage.clear();
+    axios.get("http://localhost:3333/auth/logout", {withCredentials: true})
 }

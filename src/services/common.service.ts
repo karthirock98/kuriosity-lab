@@ -36,3 +36,11 @@ export const getQuote = async () => {
     const data = await response.json();
     return data;
 }
+
+export const getUnsplashImages = async (search: string) => {
+    if(search){
+
+        const res = await axios.get(`http://localhost:3333/generic/get-unsplash-images?searchValue=${search}`, {withCredentials: true})
+        return res?.data || null;
+    }
+}
