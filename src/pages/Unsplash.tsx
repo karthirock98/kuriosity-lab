@@ -7,6 +7,8 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button";
+import NavigationMenuComp from "@/components/ui/NavigationMenu";
 
 const Unsplash = () => {
     const landingImages = LANDING_BG_IMAGES;
@@ -36,35 +38,51 @@ const Unsplash = () => {
 
     return (
         <>
-            {/* Input */}
+
             <div
-                className={`fixed top-10 left-[38%] z-10 flex gap-4 items-center slide-box ${isLeaving ? "move-away" : ""
+                className={`fixed flex-col top-10 left-[35%] z-10 flex gap-4 items-center slide-box ${isLeaving ? "move-away" : ""
                     }`}
             >
-                <div className="input-container">
-                    <input placeholder="Search Image" ref={searchField} type="text" />
-                </div>
-                <button className="back-to-top-btn" onClick={() => {
-                    setIsLeaving(true); loadImages();
-                }} >
-                    <svg
-                        className="back-to-top-icon"
-                        fill="#666666"
-                        width="100px"
-                        height="100px"
-                        viewBox="0 0 15 15"
-                    >
-                        <path
-                            d="M8.29289 2.29289C8.68342 1.90237 9.31658 1.90237 9.70711 2.29289L14.2071 6.79289C14.5976 7.18342 14.5976 7.81658 14.2071 8.20711L9.70711 12.7071C9.31658 13.0976 8.68342 13.0976 8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L11 8.5H1.5C0.947715 8.5 0.5 8.05228 0.5 7.5C0.5 6.94772 0.947715 6.5 1.5 6.5H11L8.29289 3.70711C7.90237 3.31658 7.90237 2.68342 8.29289 2.29289Z"
-                        />
-                    </svg>
-                </button>
-            </div>
+                <div className="flex items-center gap-4">
+                    <div>
+                        <Tooltip>
+                            <TooltipTrigger render={<Button variant="yellow">Hover Me!</Button>} />
+                            <TooltipContent side="bottom">
+                                <p>
+                                    🧭 Explore freely! This is a free API, so please use it wisely —
+                                    let’s not make it regret being free. 😂
+                                </p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+                    {/* Input */}
+                    <div className="flex gap-4 items-center">
+                        <div className="input-container">
+                            <input placeholder="Search Image" ref={searchField} type="text" />
+                        </div>
+                        <button className="back-to-top-btn" onClick={() => {
+                            setIsLeaving(true); loadImages();
+                        }} >
+                            <svg
+                                className="back-to-top-icon"
+                                fill="#666666"
+                                width="100px"
+                                height="100px"
+                                viewBox="0 0 15 15"
+                            >
+                                <path
+                                    d="M8.29289 2.29289C8.68342 1.90237 9.31658 1.90237 9.70711 2.29289L14.2071 6.79289C14.5976 7.18342 14.5976 7.81658 14.2071 8.20711L9.70711 12.7071C9.31658 13.0976 8.68342 13.0976 8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929L11 8.5H1.5C0.947715 8.5 0.5 8.05228 0.5 7.5C0.5 6.94772 0.947715 6.5 1.5 6.5H11L8.29289 3.70711C7.90237 3.31658 7.90237 2.68342 8.29289 2.29289Z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
 
+                </div>
+            </div>
             {/* Reset */}
             <div className={`fixed top-4 z-10 right-4 ${!images.length ? 'hidden' : ''}`}>
                 <button
-                    className="bg-white text-center w-48 rounded-2xl h-14 relative text-black text-xl font-semibold group"
+                    className="bg-white text-center w-48 rounded-2xl h-14 relative text-black text-xl font-semibold group cursor-pointer"
                     type="button"
                     onClick={() => {
                         setImages([])
@@ -82,15 +100,8 @@ const Unsplash = () => {
                 </button>
             </div>
 
-            <div className="fixed top-16 z-10">
 
-                <Tooltip>
-                    <TooltipTrigger>Hover</TooltipTrigger>
-                    <TooltipContent>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, amet rem? Minus et optio at quasi magnam! Non voluptatum</p>
-                    </TooltipContent>
-                </Tooltip>
-            </div>
+
 
             <div className={`image-wall ${images.length ? 'hidden' : ''}`}>
                 <div className="image-track">
@@ -107,6 +118,11 @@ const Unsplash = () => {
                         <img src={item} alt="" />
                     </div>
                 ))}
+            </div>
+
+            <div className="absolute bottom-0 left-0 z-50">
+
+                <NavigationMenuComp />
             </div>
         </>
     )
