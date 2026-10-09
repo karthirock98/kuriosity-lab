@@ -7,7 +7,7 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { LogOut } from "@/services/auth.service";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavigationMenuComp = () => {
     const navigate = useNavigate();
@@ -21,24 +21,24 @@ const NavigationMenuComp = () => {
 
                 {/* Products */}
                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>
-                        Menu
+                    <NavigationMenuTrigger className={"cursor-pointer"}>
+                        Go to
                     </NavigationMenuTrigger>
 
                     <NavigationMenuContent>
-                        {/* <NavigationMenuLink>
-                            Product One
-                        </NavigationMenuLink> */}
-
-                        <NavigationMenuItem>
-                            <button
-                                type="button"
-                                onClick={handleLogout}
-                                className="cursor-pointer"
-                            >
-                                Logout
-                            </button>
-                        </NavigationMenuItem>
+                        <NavigationMenuLink render={<Link to={"/unsplash"} />}>
+                            Unsplash Images
+                        </NavigationMenuLink>
+                        <NavigationMenuLink render={<Link to={"/domain-search"} />}>
+                            Domain Finder
+                        </NavigationMenuLink>
+                        <NavigationMenuLink render={<Link to={"/detective"} />}>
+                            URL Detective
+                        </NavigationMenuLink>
+                        <hr/>
+                        <NavigationMenuLink className={"cursor-pointer"}  onClick={handleLogout}>
+                            Logout
+                        </NavigationMenuLink>
                     </NavigationMenuContent>
                 </NavigationMenuItem>
 

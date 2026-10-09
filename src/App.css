@@ -1,3 +1,6 @@
+.text-highlight{
+  color: var(--color-purple-500);
+}
 .card {
   width: 400px;
   height: auto;

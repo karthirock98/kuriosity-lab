@@ -267,10 +267,7 @@ const DomainFinder = () => {
                 ]
             } />
             <JokeBanner />
-            <div className="absolute top-0 right-0 z-50">
-
-                <NavigationMenuComp />
-            </div>
+            
         </>
     );
 };
