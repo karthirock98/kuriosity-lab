@@ -1,0 +1,149 @@
+.user-info-container {
+  width: 100%;
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 24px;
+  color: #e5edf5;
+  background: rgba(15, 23, 32, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+
+  .user-info-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  }
+
+  .user-info-avatar {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #65f5b7;
+    box-shadow: 0 0 20px rgba(101, 245, 183, 0.15);
+  }
+
+  .user-info-heading {
+    min-width: 0;
+    flex: 1;
+
+    h2 {
+      margin: 5px 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    p {
+      margin: 0;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .user-info-label {
+    color: #65f5b7;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+  }
+
+  .gender-badge {
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+
+    &.male {
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+    }
+
+    &.female {
+      color: #f0abfc;
+      background: rgba(217, 70, 239, 0.12);
+    }
+  }
+
+  .user-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .user-info-item {
+    min-width: 0;
+    padding: 14px;
+    background: rgba(148, 163, 184, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 10px;
+
+    span {
+      display: block;
+      margin-bottom: 7px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+    }
+
+    strong {
+      display: block;
+      color: #e5edf5;
+      font-size: 0.9rem;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .user-info-section {
+    margin-top: 26px;
+
+    h3 {
+      margin: 0;
+      color: #65f5b7;
+      font-size: 1rem;
+      font-weight: 650;
+    }
+
+    .user-info-address {
+      margin: 12px 0;
+      color: #cbd5e1;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &.user-info-state {
+    text-align: center;
+    color: #94a3b8;
+  }
+}
+
+@media (max-width: 520px) {
+  .user-info-container {
+    padding: 18px;
+
+    .user-info-header {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .user-info-avatar {
+      width: 68px;
+      height: 68px;
+    }
+
+    .user-info-heading h2 {
+      font-size: 1.15rem;
+    }
+
+    .user-info-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

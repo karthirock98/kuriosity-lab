@@ -58,3 +58,16 @@ export const getURLInvestigatedData = async (domain: string) => {
     return res?.data || null;
   }
 };
+
+export const getUserDataByGender = async (gender: "male" | "female") => {
+  if (gender) {
+    const result = await axios.get(
+      `https://randomuser.me/api?gender=${gender}&inc=gender,nat,picture,location,dob,name`,
+    );
+    if (result.status === 200) {
+      return result?.data?.results[0] || {};
+    } else {
+      return null;
+    }
+  }
+};
