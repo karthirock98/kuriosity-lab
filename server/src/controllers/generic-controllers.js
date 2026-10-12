@@ -54,3 +54,21 @@ export const investigateURL = async (req, res, next) => {
     throw error;
   }
 };
+
+
+export const getQuoteOftheDay = async (req, res) => {
+  try {
+    const quoteData = await axios.get("https://www.quoterism.com/api/quotes/quote-of-the-day", {
+      headers: {
+        "X-API-Key": process.env.QUOTERISM_KEY
+      }
+    })
+    if(quoteData.status === 200){
+      res.status(200).json(createResponse(quoteData.status, quoteData.data, quoteData.statusText));
+      return
+    }
+  } catch (error) {
+    res.status(500).json(createResponse(500, "", "Something Went Wrong!", ""));
+    throw error;
+  }
+}

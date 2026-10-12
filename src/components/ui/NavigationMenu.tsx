@@ -19,7 +19,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import UserInfoCard from "./UserInfoCard";
+import UserInfoCard, { type UserInfoCardProps } from "./UserInfoCard";
+import { SESSION_STORAGE_KEYS } from "@/lib/app.constants";
 
 const NavigationMenuComp = () => {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const NavigationMenuComp = () => {
   const openProfile = () => {
     setUserProfileOpen(true);
   };
+  const gender: any = sessionStorage.getItem(SESSION_STORAGE_KEYS.GENDER) || "";
   return (
     <>
       <NavigationMenu>
@@ -83,7 +85,7 @@ const NavigationMenuComp = () => {
             </DialogDescription>
           </DialogHeader>
 
-          <UserInfoCard gender="male" />
+          <UserInfoCard gender={gender} />
         </DialogContent>
       </Dialog>
     </>

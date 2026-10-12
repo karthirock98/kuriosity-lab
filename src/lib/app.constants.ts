@@ -36,5 +36,6 @@ export const LANDING_BG_IMAGES = [
 
 export const SESSION_STORAGE_KEYS = {
   USER_INFO : "userInfo",
-  USER_NAME: "userName"
+  USER_NAME: "userName",
+  GENDER: "gender"
 }

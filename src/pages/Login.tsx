@@ -18,13 +18,23 @@ import { Button } from "@/components/ui/button";
 import NavigationMenuComp from "@/components/ui/NavigationMenu";
 import QuoteBanner, { type QuoteBannerRef } from "@/components/ui/QuoteBanner";
 import { SESSION_STORAGE_KEYS } from "@/lib/app.constants";
+import { getGenderByName, quoteOfTheDay } from "@/services/common.service";
+import type { QuoteOfTheDayResponse } from "@/types/generic.type";
+import QuoteOfTheDay from "@/components/ui/QuoteOfTheDay";
 
 function Login() {
   const [userName, setUserName] = useState<string>("");
+  const [quoteOfTheDayData, setQuoteOftheDay] =
+    useState<QuoteOfTheDayResponse>();
   const navigation = useNavigate();
   const quoteRef = useRef<QuoteBannerRef>(null);
   // Blinking stars
   useEffect(() => {
+    quoteOfTheDay().then((res) => {
+      if (res) {
+        setQuoteOftheDay(res.data);
+      }
+    });
     const stars = document.querySelector(".stars");
 
     if (!stars) return;
@@ -75,12 +85,12 @@ function Login() {
   const handleAltchaState = (event: Event) => {
     const customEvent = event as CustomEvent;
 
-    console.log("ALTCHA:", customEvent.detail);
+    // console.log("ALTCHA:", customEvent.detail);
 
     if (customEvent.detail?.state === "verified") {
       const payload = customEvent.detail.payload;
 
-      console.log("Solved payload:", payload);
+      // console.log("Solved payload:", payload);
 
       setAltchaPayload(payload);
     }
@@ -93,7 +103,10 @@ function Login() {
     }
 
     try {
-      sessionStorage.setItem(SESSION_STORAGE_KEYS.USER_NAME, userName)
+      sessionStorage.setItem(SESSION_STORAGE_KEYS.USER_NAME, userName);
+      const gender = await getGenderByName(userName);
+      sessionStorage.setItem(SESSION_STORAGE_KEYS.GENDER, gender?.gender || "");
+
       const response: any = await loginUser({
         userName: "test",
         password: "test123",
@@ -132,10 +145,15 @@ function Login() {
             />
           </div>
           <div className="card shadow">
-            <Input onChange={(e) => setUserName(e.target.value.trim())} placeholder="Enter your name to find who u are" />
+            <Input
+              onChange={(e) => setUserName(e.target.value.trim())}
+              placeholder="Enter your name to find who u are"
+            />
 
             <altcha-widget
               theme="aqua"
+              workers={10}
+              configuration='{"minDuration": 500}'
               challenge="http://localhost:3333/auth/get-altcha-challenge"
               ref={(element) => {
                 if (element) {
@@ -152,6 +170,7 @@ function Login() {
               Login
             </Button>
           </div>
+           <QuoteOfTheDay quote={quoteOfTheDayData} />
         </div>
 
         <div className="flex flex-col items-center w-full justify-center">
@@ -169,6 +188,7 @@ function Login() {
                 </div>
               </div>
               <QuoteBanner ref={quoteRef} />
+             
             </div>
 
             {/* <button className="embla__prev" onClick={goToPrev}>

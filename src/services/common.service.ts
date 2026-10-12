@@ -1,4 +1,5 @@
-import axios from "axios";
+import type { GenderizeResponse, QuoteOfTheDayResponse } from "@/types/generic.type";
+import axios, { type AxiosResponse } from "axios";
 const BASE_URL = "http://localhost:3333";
 
 let cachedTLDs: string[] = [];
@@ -71,3 +72,28 @@ export const getUserDataByGender = async (gender: "male" | "female") => {
     }
   }
 };
+
+export const getGenderByName = async (name: string) => {
+  if (name) {
+    const result: AxiosResponse<GenderizeResponse> = await axios.get(
+      `https://api.genderize.io?name=${name}`,
+    );
+    if (result.status === 200) {
+      return result?.data || {};
+    } else {
+      return null;
+    }
+  }
+};
+
+export const quoteOfTheDay = async () => {
+   const result: AxiosResponse<any> = await axios.get(
+      `http://localhost:3333/generic/quote-of-the-day`,
+    );
+    if (result.status === 200) {
+      return result?.data || {};
+    } else {
+      return null;
+    }
+};
+

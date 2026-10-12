@@ -4,7 +4,7 @@ import type { UserInfo } from "@/types/userInfo";
 import { useEffect, useState } from "react";
 import "../../assets/css/user-info-card.scss";
 
-interface UserInfoCardProps {
+export interface UserInfoCardProps {
   gender: "male" | "female";
 }
 
