@@ -16,7 +16,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import UserInfoCard, { type UserInfoCardProps } from "./UserInfoCard";
@@ -62,6 +61,9 @@ const NavigationMenuComp = () => {
               </NavigationMenuLink>
               <NavigationMenuLink render={<Link to={"/detective"} />}>
                 URL Detective
+              </NavigationMenuLink>
+              <NavigationMenuLink render={<Link to={"/hormones"} />}>
+                Inbuilt Drugs 
               </NavigationMenuLink>
               <hr />
               <NavigationMenuLink
