@@ -1,0 +1,387 @@
+
+[
+  {
+    "name": "Serotonin",
+    "aliases": ["5-HT"],
+    "category": "neurotransmitter",
+    "functions": ["mood regulation", "sleep", "appetite", "digestion"]
+  },
+  {
+    "name": "Dopamine",
+    "aliases": [],
+    "category": "neurotransmitter",
+    "functions": ["motivation", "reward learning", "movement", "attention"]
+  },
+  {
+    "name": "Norepinephrine",
+    "aliases": ["Noradrenaline"],
+    "category": "neurotransmitter_and_hormone",
+    "functions": ["alertness", "attention", "stress response"]
+  },
+  {
+    "name": "Epinephrine",
+    "aliases": ["Adrenaline"],
+    "category": "hormone_and_neurotransmitter",
+    "functions": ["fight-or-flight", "heart rate", "energy mobilization"]
+  },
+  {
+    "name": "GABA",
+    "aliases": ["Gamma-aminobutyric acid"],
+    "category": "neurotransmitter",
+    "functions": ["inhibitory signalling", "anxiety regulation", "neural activity"]
+  },
+  {
+    "name": "Glutamate",
+    "aliases": [],
+    "category": "neurotransmitter",
+    "functions": ["learning", "memory", "excitatory signalling"]
+  },
+  {
+    "name": "Acetylcholine",
+    "aliases": ["ACh"],
+    "category": "neurotransmitter",
+    "functions": ["memory", "attention", "muscle contraction"]
+  },
+  {
+    "name": "Glycine",
+    "aliases": [],
+    "category": "neurotransmitter",
+    "functions": ["spinal signalling", "motor control", "inhibition"]
+  },
+  {
+    "name": "Histamine",
+    "aliases": [],
+    "category": "neurotransmitter_and_local_messenger",
+    "functions": ["wakefulness", "appetite", "immune responses"]
+  },
+  {
+    "name": "Adenosine",
+    "aliases": [],
+    "category": "neuromodulator",
+    "functions": ["sleep pressure", "neural activity regulation"]
+  },
+  {
+    "name": "Melatonin",
+    "aliases": [],
+    "category": "hormone",
+    "functions": ["sleep timing", "circadian rhythm"]
+  },
+  {
+    "name": "Cortisol",
+    "aliases": [],
+    "category": "hormone",
+    "functions": ["stress response", "metabolism", "inflammation regulation"]
+  },
+  {
+    "name": "Oxytocin",
+    "aliases": [],
+    "category": "hormone_and_neuropeptide",
+    "functions": ["childbirth", "milk ejection", "social bonding"]
+  },
+  {
+    "name": "Vasopressin",
+    "aliases": ["ADH"],
+    "category": "hormone_and_neuropeptide",
+    "functions": ["water retention", "blood pressure regulation"]
+  },
+  {
+    "name": "Testosterone",
+    "aliases": [],
+    "category": "steroid_hormone",
+    "functions": ["sexual development", "libido", "muscle and bone health"]
+  },
+  {
+    "name": "Estradiol",
+    "aliases": ["E2"],
+    "category": "steroid_hormone",
+    "functions": ["reproductive function", "bone health", "brain signalling"]
+  },
+  {
+    "name": "Progesterone",
+    "aliases": [],
+    "category": "steroid_hormone",
+    "functions": ["menstrual cycle", "pregnancy", "reproductive function"]
+  },
+  {
+    "name": "Thyroxine",
+    "aliases": ["T4"],
+    "category": "thyroid_hormone",
+    "functions": ["metabolism", "growth", "development"]
+  },
+  {
+    "name": "Triiodothyronine",
+    "aliases": ["T3"],
+    "category": "thyroid_hormone",
+    "functions": ["metabolism", "temperature regulation", "development"]
+  },
+  {
+    "name": "Insulin",
+    "aliases": [],
+    "category": "peptide_hormone",
+    "functions": ["blood glucose regulation", "nutrient storage"]
+  },
+  {
+    "name": "Glucagon",
+    "aliases": [],
+    "category": "peptide_hormone",
+    "functions": ["increasing blood glucose", "energy mobilization"]
+  },
+  {
+    "name": "Leptin",
+    "aliases": [],
+    "category": "peptide_hormone",
+    "functions": ["appetite regulation", "energy balance"]
+  },
+  {
+    "name": "Ghrelin",
+    "aliases": [],
+    "category": "gut_hormone",
+    "functions": ["hunger", "meal anticipation", "growth hormone release"]
+  },
+  {
+    "name": "GLP-1",
+    "aliases": ["Glucagon-like peptide-1"],
+    "category": "gut_hormone",
+    "functions": ["glucose regulation", "satiety", "gastric emptying"]
+  },
+  {
+    "name": "Peptide YY",
+    "aliases": ["PYY"],
+    "category": "gut_hormone",
+    "functions": ["satiety", "appetite regulation"]
+  },
+  {
+    "name": "Cholecystokinin",
+    "aliases": ["CCK"],
+    "category": "gut_hormone_and_neuropeptide",
+    "functions": ["digestion", "satiety", "gallbladder contraction"]
+  },
+  {
+    "name": "Growth hormone",
+    "aliases": ["GH"],
+    "category": "pituitary_hormone",
+    "functions": ["growth", "tissue repair", "metabolism"]
+  },
+  {
+    "name": "Prolactin",
+    "aliases": ["PRL"],
+    "category": "pituitary_hormone",
+    "functions": ["milk production", "reproductive regulation"]
+  },
+  {
+    "name": "Thyroid-stimulating hormone",
+    "aliases": ["TSH"],
+    "category": "pituitary_hormone",
+    "functions": ["thyroid hormone production"]
+  },
+  {
+    "name": "Adrenocorticotropic hormone",
+    "aliases": ["ACTH"],
+    "category": "pituitary_hormone",
+    "functions": ["cortisol production", "adrenal regulation"]
+  },
+  {
+    "name": "Follicle-stimulating hormone",
+    "aliases": ["FSH"],
+    "category": "pituitary_hormone",
+    "functions": ["follicle development", "sperm production"]
+  },
+  {
+    "name": "Luteinizing hormone",
+    "aliases": ["LH"],
+    "category": "pituitary_hormone",
+    "functions": ["ovulation", "testosterone production"]
+  },
+  {
+    "name": "Gonadotropin-releasing hormone",
+    "aliases": ["GnRH"],
+    "category": "hypothalamic_hormone",
+    "functions": ["FSH regulation", "LH regulation"]
+  },
+  {
+    "name": "Corticotropin-releasing hormone",
+    "aliases": ["CRH"],
+    "category": "hypothalamic_hormone",
+    "functions": ["stress response", "ACTH release"]
+  },
+  {
+    "name": "Somatostatin",
+    "aliases": [],
+    "category": "hormone_and_neuropeptide",
+    "functions": ["growth hormone inhibition", "digestive regulation"]
+  },
+  {
+    "name": "Endorphins",
+    "aliases": ["Beta-endorphin"],
+    "category": "endogenous_opioid_peptide",
+    "functions": ["pain modulation", "stress response"]
+  },
+  {
+    "name": "Enkephalins",
+    "aliases": [],
+    "category": "endogenous_opioid_peptide",
+    "functions": ["pain modulation", "neural signalling"]
+  },
+  {
+    "name": "Substance P",
+    "aliases": [],
+    "category": "neuropeptide",
+    "functions": ["pain transmission", "inflammation", "nausea signalling"]
+  },
+  {
+    "name": "Neuropeptide Y",
+    "aliases": ["NPY"],
+    "category": "neuropeptide",
+    "functions": ["appetite", "stress regulation", "energy balance"]
+  },
+  {
+    "name": "Orexin",
+    "aliases": ["Hypocretin"],
+    "category": "neuropeptide",
+    "functions": ["wakefulness", "arousal", "appetite regulation"]
+  },
+  {
+    "name": "Kisspeptin",
+    "aliases": [],
+    "category": "neuropeptide",
+    "functions": ["reproductive development", "GnRH regulation"]
+  },
+  {
+    "name": "Brain-derived neurotrophic factor",
+    "aliases": ["BDNF"],
+    "category": "neurotrophic_growth_factor",
+    "functions": ["neuronal health", "learning", "synaptic plasticity"]
+  },
+  {
+    "name": "Nerve growth factor",
+    "aliases": ["NGF"],
+    "category": "neurotrophic_growth_factor",
+    "functions": ["neuron survival", "nerve development"]
+  },
+  {
+    "name": "Nitric oxide",
+    "aliases": ["NO"],
+    "category": "gaseous_signalling_molecule",
+    "functions": ["blood vessel relaxation", "neural communication"]
+  },
+  {
+    "name": "Anandamide",
+    "aliases": ["AEA"],
+    "category": "endocannabinoid",
+    "functions": ["mood modulation", "pain signalling", "appetite"]
+  },
+  {
+    "name": "2-Arachidonoylglycerol",
+    "aliases": ["2-AG"],
+    "category": "endocannabinoid",
+    "functions": ["synaptic regulation", "pain modulation"]
+  },
+  {
+    "name": "Inhibin",
+    "aliases": [],
+    "category": "glycoprotein_hormone",
+    "functions": ["FSH inhibition", "reproductive regulation"]
+  },
+  {
+    "name": "Anti-Mullerian hormone",
+    "aliases": ["AMH"],
+    "category": "glycoprotein_hormone",
+    "functions": ["reproductive development", "ovarian follicle assessment"]
+  },
+  {
+    "name": "Human chorionic gonadotropin",
+    "aliases": ["hCG"],
+    "category": "placental_hormone",
+    "functions": ["early pregnancy support", "corpus luteum maintenance"]
+  },
+  {
+    "name": "Parathyroid hormone",
+    "aliases": ["PTH"],
+    "category": "peptide_hormone",
+    "functions": ["calcium regulation", "phosphate regulation"]
+  },
+  {
+    "name": "Calcitriol",
+    "aliases": ["Active vitamin D"],
+    "category": "steroid_like_hormone",
+    "functions": ["calcium absorption", "phosphate regulation"]
+  },
+  {
+    "name": "Aldosterone",
+    "aliases": [],
+    "category": "steroid_hormone",
+    "functions": ["sodium balance", "potassium balance", "blood pressure"]
+  },
+  {
+    "name": "Atrial natriuretic peptide",
+    "aliases": ["ANP"],
+    "category": "peptide_hormone",
+    "functions": ["fluid balance", "sodium excretion", "blood pressure"]
+  },
+  {
+    "name": "Angiotensin II",
+    "aliases": [],
+    "category": "peptide_signalling_molecule",
+    "functions": ["blood vessel constriction", "thirst", "blood pressure"]
+  },
+  {
+    "name": "Renin",
+    "aliases": [],
+    "category": "regulatory_enzyme",
+    "functions": ["blood pressure regulation", "angiotensin system activation"]
+  },
+  {
+    "name": "Erythropoietin",
+    "aliases": ["EPO"],
+    "category": "glycoprotein_hormone",
+    "functions": ["red blood cell production"]
+  },
+  {
+    "name": "Fibroblast growth factor 23",
+    "aliases": ["FGF23"],
+    "category": "bone_derived_hormone",
+    "functions": ["phosphate regulation", "vitamin D metabolism"]
+  },
+  {
+    "name": "Insulin-like growth factor 1",
+    "aliases": ["IGF-1"],
+    "category": "growth_factor_and_hormone",
+    "functions": ["growth", "tissue development", "cell survival"]
+  },
+  {
+    "name": "Prostaglandins",
+    "aliases": [],
+    "category": "lipid_mediators",
+    "functions": ["inflammation", "pain", "fever", "reproductive processes"]
+  },
+  {
+    "name": "Prostacyclin",
+    "aliases": ["PGI2"],
+    "category": "lipid_mediator",
+    "functions": ["blood vessel dilation", "inhibition of platelet aggregation"]
+  },
+  {
+    "name": "Thromboxane A2",
+    "aliases": ["TXA2"],
+    "category": "lipid_mediator",
+    "functions": ["platelet aggregation", "blood vessel constriction"]
+  },
+  {
+    "name": "Interleukin-6",
+    "aliases": ["IL-6"],
+    "category": "cytokine",
+    "functions": ["immune signalling", "inflammation", "acute-phase response"]
+  },
+  {
+    "name": "Tumor necrosis factor alpha",
+    "aliases": ["TNF-alpha"],
+    "category": "cytokine",
+    "functions": ["inflammation", "immune regulation"]
+  },
+  {
+    "name": "Interleukin-10",
+    "aliases": ["IL-10"],
+    "category": "cytokine",
+    "functions": ["limiting excessive inflammation", "immune regulation"]
+  }
+]

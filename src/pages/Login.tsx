@@ -115,7 +115,7 @@ function Login() {
 
       if (response?.data?.statusCode === 200) {
         setSession("DUMMY");
-        navigation("/unsplash");
+        navigation("/hormones");
       } else {
         setAltchaPayload("");
         const altcha = document.querySelector("altcha-widget");

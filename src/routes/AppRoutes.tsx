@@ -5,6 +5,7 @@ import Login from "@/pages/Login";
 import DomainFinder from "@/pages/domain-finder";
 import Unsplash from "@/pages/Unsplash";
 import InternetDetective from "@/pages/InternetDetective";
+import Hormones from "@/pages/Hormones";
 
 const AppRoutes = () => {
     return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
                 <Route path="/domain-search" element={<DomainFinder />} />
                 <Route path="/unsplash" element={<Unsplash />} />
                 <Route path="/detective" element={<InternetDetective />} />
+                <Route path="/hormones" element={<Hormones />} />
             </Route>
             <Route path="/" element={<Login />} />
         </Routes>
