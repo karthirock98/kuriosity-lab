@@ -1,3 +1,6 @@
+.text-highlight{
+  color: var(--color-purple-500);
+}
 .card {
   width: 400px;
   height: auto;
@@ -409,4 +412,46 @@
     opacity: 0;
     transform: scale(1) rotate(-20deg);
   }
+}
+
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 #0b1118;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b1118;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #475569,
+    #334155
+  );
+  border: 2px solid #0b1118;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #65f5b7;
+}
+
+::-webkit-scrollbar-corner {
+  background: #0b1118;
+}
+
+/* Optional: smoother scrolling */
+html {
+  scroll-behavior: smooth;
 }

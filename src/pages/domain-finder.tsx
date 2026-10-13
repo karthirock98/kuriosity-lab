@@ -95,11 +95,6 @@ const DomainFinder = () => {
                 {/* Main content */}
 
                 <div className="page-content">
-                    <Button onClick={() => {
-                        axios.get("http://localhost:3333/auth/user/profile", { withCredentials: true }).then((res) => {
-                            console.log(res);
-                        })
-                    }} >Hello</Button>
                     <div className="content">
                         <Controller
                             name="domain-search"
@@ -267,10 +262,7 @@ const DomainFinder = () => {
                 ]
             } />
             <JokeBanner />
-            <div className="absolute top-0 right-0 z-50">
-
-                <NavigationMenuComp />
-            </div>
+            
         </>
     );
 };

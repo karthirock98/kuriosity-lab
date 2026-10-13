@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button";
 import NavigationMenuComp from "@/components/ui/NavigationMenu";
+import UserInfoCard from "@/components/ui/UserInfoCard";
 
 const Unsplash = () => {
     const landingImages = LANDING_BG_IMAGES;
@@ -119,11 +120,7 @@ const Unsplash = () => {
                     </div>
                 ))}
             </div>
-
-            <div className="absolute bottom-0 left-0 z-50">
-
-                <NavigationMenuComp />
-            </div>
+            
         </>
     )
 }

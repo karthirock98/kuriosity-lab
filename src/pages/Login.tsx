@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import "../App.css";
 
-
-
 import "altcha";
-import type { } from "altcha/types/react";
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
-import galaxy from '../assets/galaxy.jpg'
-import galaxy2 from '../assets/galaxy-2.jpg'
-import galaxy3 from '../assets/galaxy-3.jpg'
+import type {} from "altcha/types/react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import galaxy from "../assets/galaxy.jpg";
+import galaxy2 from "../assets/galaxy-2.jpg";
+import galaxy3 from "../assets/galaxy-3.jpg";
 import "altcha/themes/aqua.css";
-import { Presets, SplitFlap } from 'react-split-flap'
+import { Presets, SplitFlap } from "react-split-flap";
 import { authService, loginUser, setSession } from "../services/auth.service";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
@@ -19,12 +17,24 @@ import RadialMenu from "@/components/ui/RadialMenu";
 import { Button } from "@/components/ui/button";
 import NavigationMenuComp from "@/components/ui/NavigationMenu";
 import QuoteBanner, { type QuoteBannerRef } from "@/components/ui/QuoteBanner";
+import { SESSION_STORAGE_KEYS } from "@/lib/app.constants";
+import { getGenderByName, quoteOfTheDay } from "@/services/common.service";
+import type { QuoteOfTheDayResponse } from "@/types/generic.type";
+import QuoteOfTheDay from "@/components/ui/QuoteOfTheDay";
 
 function Login() {
-    const navigation = useNavigate();
-    const quoteRef = useRef<QuoteBannerRef>(null);
+  const [userName, setUserName] = useState<string>("");
+  const [quoteOfTheDayData, setQuoteOftheDay] =
+    useState<QuoteOfTheDayResponse>();
+  const navigation = useNavigate();
+  const quoteRef = useRef<QuoteBannerRef>(null);
   // Blinking stars
   useEffect(() => {
+    quoteOfTheDay().then((res) => {
+      if (res) {
+        setQuoteOftheDay(res.data);
+      }
+    });
     const stars = document.querySelector(".stars");
 
     if (!stars) return;
@@ -53,35 +63,34 @@ function Login() {
     };
   }, []);
 
-
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, axis: 'y' }, [Autoplay(
-    {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, axis: "y" }, [
+    Autoplay({
       delay: 10000,
-      stopOnInteraction: false
-    }
-  )])
+      stopOnInteraction: false,
+    }),
+  ]);
   useEffect(() => {
-    if (!emblaApi) return
-    emblaApi.plugins().autoplay?.play()
+    if (!emblaApi) return;
+    emblaApi.plugins().autoplay?.play();
 
     emblaApi.on("settle", () => {
       quoteRef.current?.refreshQuote();
-    })
-  }, [emblaApi])
+    });
+  }, [emblaApi]);
 
-  const goToPrev = () => emblaApi?.scrollPrev()
-  const goToNext = () => emblaApi?.scrollNext()
+  const goToPrev = () => emblaApi?.scrollPrev();
+  const goToNext = () => emblaApi?.scrollNext();
   const [altchaPayload, setAltchaPayload] = useState("");
 
   const handleAltchaState = (event: Event) => {
     const customEvent = event as CustomEvent;
 
-    console.log("ALTCHA:", customEvent.detail);
+    // console.log("ALTCHA:", customEvent.detail);
 
     if (customEvent.detail?.state === "verified") {
       const payload = customEvent.detail.payload;
 
-      console.log("Solved payload:", payload);
+      // console.log("Solved payload:", payload);
 
       setAltchaPayload(payload);
     }
@@ -94,20 +103,22 @@ function Login() {
     }
 
     try {
-      const response: any = await loginUser(
-        {
-          userName: "test",
-          password: "test123",
-          altcha: altchaPayload,
-        }
-      );
+      sessionStorage.setItem(SESSION_STORAGE_KEYS.USER_NAME, userName);
+      const gender = await getGenderByName(userName);
+      sessionStorage.setItem(SESSION_STORAGE_KEYS.GENDER, gender?.gender || "");
+
+      const response: any = await loginUser({
+        userName: "test",
+        password: "test123",
+        altcha: altchaPayload,
+      });
 
       if (response?.data?.statusCode === 200) {
-        setSession("DUMMY")
-        navigation("/unsplash")
+        setSession("DUMMY");
+        navigation("/unsplash");
       } else {
-        setAltchaPayload("")
-        const altcha = document.querySelector('altcha-widget');
+        setAltchaPayload("");
+        const altcha = document.querySelector("altcha-widget");
         altcha?.reset();
       }
 
@@ -121,24 +132,32 @@ function Login() {
     <>
       <div className="flex gap-4 h-screen justify-between">
         <div className="flex flex-col items-center justify-center w-full">
-          <div className="stars">
-          </div>
+          <div className="stars"></div>
           <div className="pb-6">
-            <SplitFlap value="Kuriosity Lab" mode="chars" size="medium" duration={2000} animateOnMount chars={Presets.ALPHANUM} theme="dark" />
+            <SplitFlap
+              value="Kuriosity Lab"
+              mode="chars"
+              size="medium"
+              duration={2000}
+              animateOnMount
+              chars={Presets.ALPHANUM}
+              theme="dark"
+            />
           </div>
           <div className="card shadow">
-
-            <Input placeholder="Enter your name to find who u are" />
+            <Input
+              onChange={(e) => setUserName(e.target.value.trim())}
+              placeholder="Enter your name to find who u are"
+            />
 
             <altcha-widget
               theme="aqua"
+              workers={10}
+              configuration='{"minDuration": 500}'
               challenge="http://localhost:3333/auth/get-altcha-challenge"
               ref={(element) => {
                 if (element) {
-                  element.addEventListener(
-                    "statechange",
-                    handleAltchaState
-                  );
+                  element.addEventListener("statechange", handleAltchaState);
                 }
               }}
             />
@@ -150,7 +169,6 @@ function Login() {
             >
               Login
             </Button>
-
           </div>
         </div>
 
@@ -158,11 +176,18 @@ function Login() {
           <div className="embla">
             <div className="embla__viewport relative" ref={emblaRef}>
               <div className="embla__container">
-                <div className="embla__slide"><img src={galaxy} /></div>
-                <div className="embla__slide"><img src={galaxy2} /></div>
-                <div className="embla__slide"><img src={galaxy3} /></div>
+                <div className="embla__slide">
+                  <img src={galaxy} />
+                </div>
+                <div className="embla__slide">
+                  <img src={galaxy2} />
+                </div>
+                <div className="embla__slide">
+                  <img src={galaxy3} />
+                </div>
               </div>
               <QuoteBanner ref={quoteRef} />
+             
             </div>
 
             {/* <button className="embla__prev" onClick={goToPrev}>
@@ -171,18 +196,17 @@ function Login() {
             <button className="embla__next" onClick={goToNext}>
               Scroll to next
             </button> */}
-          
           </div>
         </div>
       </div>
-      <RadialMenu items={
-        [
+      <RadialMenu
+        items={[
           "React Flip Flap",
           "Embla Carousel",
           "Altcha Captcha",
-          "IndianQuotes API"
-        ]
-      } />
+          "IndianQuotes API",
+        ]}
+      />
     </>
   );
 }

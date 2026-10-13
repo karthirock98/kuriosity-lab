@@ -33,3 +33,9 @@ export const LANDING_BG_IMAGES = [
   'https://images.unsplash.com/photo-1769423456200-ee3bd2784ed8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA3NDY5MTR8&ixlib=rb-4.1.0&q=80&w=600',
   'https://images.unsplash.com/photo-1770387200335-31ae84af6b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA3NDY5MzV8&ixlib=rb-4.1.0&q=80&w=600',
 ];
+
+export const SESSION_STORAGE_KEYS = {
+  USER_INFO : "userInfo",
+  USER_NAME: "userName",
+  GENDER: "gender"
+}
