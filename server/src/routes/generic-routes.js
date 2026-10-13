@@ -5,7 +5,7 @@ import { getQuoteOftheDay, getUnsplashImages, investigateURL } from "../controll
 const GENERIC_ROUTES = express.Router()
 
 GENERIC_ROUTES.get("/get-unsplash-images",isAuthenticated, getUnsplashImages)
-GENERIC_ROUTES.get("/quote-of-the-day", getQuoteOftheDay)
+GENERIC_ROUTES.get("/quote-of-the-day", isAuthenticated, getQuoteOftheDay)
 GENERIC_ROUTES.post("/investigate-url",isAuthenticated, investigateURL)
 
 export default GENERIC_ROUTES

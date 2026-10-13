@@ -170,7 +170,6 @@ function Login() {
               Login
             </Button>
           </div>
-           <QuoteOfTheDay quote={quoteOfTheDayData} />
         </div>
 
         <div className="flex flex-col items-center w-full justify-center">
