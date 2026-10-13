@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon start-kuriosity.js",
+    "start:dev-i": "infisical run -- nodemon start-kuriosity.js",
     "start:prod": "node start-kuriosity.js"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.1",
+    "groq-sdk": "^1.6.0",
     "jsonwebtoken": "^9.0.3",
     "pm2": "^7.0.4"
   },
