@@ -1,15 +1,15 @@
-
 .sticky-note {
   position: relative;
   isolation: isolate;
   overflow: hidden;
 
-  width: 12rem;
-  height: 13rem;
+  width: 14rem;
+  min-height: 15rem;
+  height: max-content;
   font-size: 16px;
 
   background: var(--note-color, #f8ea69);
-  
+
   border-top-left-radius: 250px 15px;
   border-bottom-left-radius: 20px 115px;
   font-family: "Caveat", cursive;
@@ -19,7 +19,7 @@
     z-index: 2;
     padding: 1.5rem 1rem;
     color: #292929;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1.5;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
@@ -33,27 +33,21 @@
     pointer-events: none;
     z-index: 1;
 
-      background:
+    background:
       // Top-left: 35% lighter
-      linear-gradient(
-        135deg,
+      linear-gradient(135deg,
         color-mix(in srgb, var(--note-color) 65%, white),
-        transparent 70%
-      ) top left / 12px 12px no-repeat,
+        transparent 70%) top left / 12px 12px no-repeat,
 
       // Top-right: 20% darker
-      linear-gradient(
-        225deg,
+      linear-gradient(225deg,
         color-mix(in srgb, var(--note-color) 80%, black),
-        transparent 70%
-      ) top right / 12px 12px no-repeat,
+        transparent 70%) top right / 12px 12px no-repeat,
 
       // Bottom-left: 30% darker
-      linear-gradient(
-        45deg,
+      linear-gradient(45deg,
         color-mix(in srgb, var(--note-color) 70%, black),
-        transparent 70%
-      ) bottom left / 12px 12px no-repeat;
+        transparent 70%) bottom left / 12px 12px no-repeat;
   }
 
   // Animated bottom-right fold
@@ -67,15 +61,22 @@
     border-style: solid;
     border-width: var(--fold-border, 0);
     border-color:
-      transparent
-      color-mix(in srgb, var(--note-color) 75%, #000)
-      #232323
-      color-mix(in srgb, var(--note-color) 85%, #bebebe);
+      transparent color-mix(in srgb, var(--note-color) 75%, #000) #232323 color-mix(in srgb, var(--note-color) 85%, #bebebe);
 
     transition:
       border-width var(--fold-duration, 1s) ease-in-out;
 
     pointer-events: none;
     z-index: 1;
+  }
+}
+
+
+.popup-sticky-note {
+  width: 25rem;
+
+  .sticky-note__text {
+
+    font-size: 2rem;
   }
 }

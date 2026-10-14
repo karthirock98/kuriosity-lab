@@ -5,11 +5,13 @@ import "../../assets/css/sticky-note.scss";
 interface StickyNoteProps {
   color?: string;
   text: string;
+  className?: string
 }
 
 export function StickyNote({
   color = "#f8ea69",
   text,
+  className = ""
 }: StickyNoteProps) {
   const noteRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +54,7 @@ export function StickyNote({
   return (
     <div
       ref={noteRef}
-      className="sticky-note"
+      className={"sticky-note " + className}
       style={{ "--note-color": color } as React.CSSProperties}
     >
       <div className="sticky-note__text">{text}</div>

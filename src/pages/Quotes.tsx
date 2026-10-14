@@ -4,6 +4,7 @@ import "@/assets/css/quotes.scss";
 import quotes from "@/lib/quotes.json";
 import { emotion_authors } from "@/lib/app.constants";
 import { getQuoteBasedOnAuthorAndEmotion } from "@/services/common.service";
+import { Button } from "@/components/ui/button";
 
 type EmotionAuthor = {
   emotion: string;
@@ -100,6 +101,12 @@ const Quotes = () => {
     }
   };
 
+  const resetPage = ()=>{
+    setSelectedAuthor("")
+    setSelectedEmotion("")
+    setFetchedQuote("")
+  }
+
   return (
     <>
       <div className="glass-card" />
@@ -152,13 +159,16 @@ const Quotes = () => {
             )}
 
             {selectedAuthor && (
-              <button type="button" onClick={handleFetch} disabled={isFetching}>
+              <button className="q-btn" type="button" onClick={handleFetch} disabled={isFetching}>
                 {isFetching ? "Fetching..." : "Fetch quotes"}
               </button>
             )}
           </>
         ) : (
-          <StickyNote text={fetchedQuote} color="#E8F5E9" />
+          <div className="flex flex-col gap-2">
+            <StickyNote className="popup-sticky-note" text={fetchedQuote} color="#E8F5E9" />
+            <Button onClick={resetPage} variant="outline" className={"w-14 mx-auto"}>Reset</Button>
+          </div>
         )}
       </div>
     </>
