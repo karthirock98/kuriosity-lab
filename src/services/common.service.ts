@@ -97,3 +97,14 @@ export const quoteOfTheDay = async () => {
     }
 };
 
+export const getQuoteBasedOnAuthorAndEmotion = async (payload: any) => {
+   const result: AxiosResponse<any> = await axios.post(
+      `http://localhost:3333/groq/quotes`, payload,  { withCredentials: true },
+    );
+    if (result.status === 200) {
+      return result?.data || {};
+    } else {
+      return null;
+    }
+};
+

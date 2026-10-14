@@ -1,0 +1,146 @@
+
+.quotes-scatter {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+//   background: #080b0f;
+
+  background:
+    linear-gradient(rgba(8, 11, 15, 0.15), rgba(8, 11, 15, 0.15)),
+    url("../quotes-board.png") center / cover no-repeat;
+
+  &__note {
+    position: absolute;
+    width: 12rem;
+    height: 13rem;
+    transform-origin: center;
+  }
+
+  // Glossy layer over the entire page
+  &__gloss {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+
+    background:
+      linear-gradient(
+        125deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.035) 35%,
+        rgba(255, 255, 255, 0.09) 42%,
+        rgba(255, 255, 255, 0.025) 48%,
+        transparent 60%
+      );
+
+    mix-blend-mode: screen;
+  }
+}
+
+
+
+.glass-card {
+  background: rgb(67 67 67 / 41%);
+  backdrop-filter: blur(0.8px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(59, 59, 59, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 20px 10px rgb(63, 63, 63);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 9;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(93, 93, 93, 0.8),
+    transparent
+  );
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(59, 59, 59, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+
+.quote-search-box {
+  position: absolute;
+  z-index: 20;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+
+  select,
+  .q-btn {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font: inherit;
+  }
+
+  select {
+    min-width: 150px;
+    background: #f8fafc;
+    color: #172033;
+  }
+
+    .q-btn  {
+    background: #172033;
+    color: white;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .quote-search-box {
+    width: calc(100% - 32px);
+    flex-direction: column;
+    align-items: stretch;
+
+    select,
+    button {
+      width: 100%;
+    }
+  }
+}
