@@ -4,6 +4,6 @@ import { getAIQuoteResponse } from "../controllers/groq-controller.js"
 
 const GROQ_ROUTES = express.Router()
 
-GROQ_ROUTES.get("/quotes", getAIQuoteResponse)
+GROQ_ROUTES.post("/quotes", isAuthenticated, getAIQuoteResponse)
 
 export default GROQ_ROUTES
