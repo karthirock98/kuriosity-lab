@@ -1,0 +1,311 @@
+{
+  "type": "MapChart",
+  "settings": {
+    "autoHome": true,
+    "panX": "rotateX",
+    "panY": "rotateY",
+    "boxZoom": "shift",
+    "minZoomLevel": 0.5,
+    "zoomLevel": 1,
+    "homeZoomLevel": 1.5,
+    "animationDuration": 800,
+    "background": {
+      "type": "RoundedRectangle",
+      "settings": {
+        "fill": {
+          "type": "Color",
+          "value": "#101318"
+        },
+        "fillOpacity": 0
+      }
+    },
+    "zoomControl": {
+      "type": "ZoomControl",
+      "properties": {
+        "homeButton": {
+          "settings": {
+            "visible": true
+          }
+        }
+      }
+    },
+    "animations": [
+      {
+        "key": "rotationX",
+        "from": 179,
+        "to": 539,
+        "duration": 30000,
+        "loops": 0
+      }
+    ],
+    "projectionName": "geoOrthographic",
+    "rotationX": 287.6719875256014,
+    "rotationY": -26.26323214698561,
+    "homeGeoPoint": {
+      "latitude": 12.9716,
+      "longitude": 77.5946
+    },
+    "homeRotationX": -77.5946,
+    "homeRotationY": -12.9716,
+    "tooltip": {
+      "type": "Tooltip",
+      "settings": {
+        "background": {
+          "type": "PointedRectangle",
+          "settings": {
+            "themeTags": ["tooltip", "background"],
+            "shadowOpacity": 1,
+            "shadowBlur": 4,
+            "shadowOffsetX": 2,
+            "shadowOffsetY": 2,
+            "shadowColor": {
+              "type": "Color",
+              "value": "#000000"
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "series": ["#series-0", "#series-1", "#series-2", "#series-3"]
+  },
+  "children": [
+    {
+      "type": "Label",
+      "settings": {
+        "text": "Imagery: NASA Earth Observatory",
+        "fontSize": 12,
+        "fill": {
+          "type": "Color",
+          "value": "#ffffff"
+        },
+        "fillOpacity": 0.6,
+        "x": {
+          "type": "Percent",
+          "value": 100
+        },
+        "centerX": {
+          "type": "Percent",
+          "value": 100
+        },
+        "dx": -10,
+        "y": 10,
+        "visible": false
+      },
+      "index": 2
+    }
+  ],
+  "refs": [
+    {
+      "data-0": [
+        {
+          "geometry": {
+            "type": "GeoRectangle",
+            "north": 90,
+            "east": 180,
+            "south": -90,
+            "west": -180
+          },
+          "__parse": true
+        }
+      ]
+    },
+    {
+      "data-1": []
+    },
+    {
+      "data-2": [
+        {
+          "sourceId": "US",
+          "targetId": "GB",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "data-3": [
+        {
+          "pointIds": ["US", "GB"],
+          "__parse": true
+        }
+      ]
+    },
+    {
+      "series-0": {
+        "type": "MapPolygonSeries",
+        "settings": {
+          "name": "Background",
+          "affectsBounds": true,
+          "geometryField": "geometry",
+          "geometryTypeField": "geometryType",
+          "idField": "id",
+          "interpolationDuration": 600,
+          "interactiveChildren": true,
+          "setStateOnChildren": false,
+          "scale": 1,
+          "opacity": 1,
+          "rotation": 0,
+          "position": "relative",
+          "tooltipX": {
+            "type": "Percent",
+            "value": 50
+          },
+          "tooltipY": {
+            "type": "Percent",
+            "value": 50
+          },
+          "tooltipPosition": "fixed",
+          "isMeasured": true,
+          "stateAnimationDuration": 600
+        },
+        "properties": {
+          "data": "#data-0",
+          "mapPolygons": {
+            "properties": {
+              "template": {
+                "settings": {
+                  "fill": "@root.interfaceColors.get('alternativeBackground')",
+                  "fillOpacity": 0.05,
+                  "strokeOpacity": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "series-1": {
+        "type": "MapPolygonSeries",
+        "settings": {
+          "geoJSON": "am5geodata_worldHigh",
+          "clickZoom": true,
+          "heatRules": []
+        },
+        "properties": {
+          "mapPolygons": {
+            "properties": {
+              "template": {
+                "settings": {
+                  "tooltipText": "{name}",
+                  "interactive": true,
+                  "strokeWidth": 1,
+                  "strokeOpacity": 0.31,
+                  "strokeDasharray": [1, 1]
+                },
+                "states": [
+                  {
+                    "key": "hover",
+                    "settings": {
+                      "fill": "@root.interfaceColors.get('primaryButtonHover')",
+                      "fillOpacity": 1
+                    }
+                  },
+                  {
+                    "key": "active",
+                    "settings": {
+                      "fill": "@root.interfaceColors.get('primaryButtonActive')",
+                      "fillOpacity": 1
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "series-2": {
+        "type": "MapSankeySeries",
+        "settings": {
+          "name": "Flows",
+          "polygonSeries": "#series-1",
+          "maxWidth": 4.32,
+          "nodeWidth": 5.76,
+          "visible": false
+        },
+        "properties": {
+          "data": "#data-2",
+          "mapPolygons": {
+            "properties": {
+              "template": {
+                "settings": {
+                  "fill": {
+                    "type": "Color",
+                    "value": "#a367dc"
+                  },
+                  "fillOpacity": 0.75,
+                  "strokeOpacity": 0
+                }
+              }
+            }
+          },
+          "nodes": {
+            "properties": {
+              "mapPolygons": {
+                "properties": {
+                  "template": {
+                    "settings": {
+                      "fill": {
+                        "type": "Color",
+                        "value": "#6771dc"
+                      },
+                      "stroke": {
+                        "type": "Color",
+                        "value": "#ffffff"
+                      },
+                      "strokeWidth": 1.6
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "series-3": {
+        "type": "MapLineSeries",
+        "settings": {
+          "name": "Lines",
+          "visible": false
+        },
+        "properties": {
+          "data": "#data-3",
+          "mapLines": {
+            "properties": {
+              "template": {
+                "settings": {
+                  "stroke": {
+                    "type": "Color",
+                    "value": "#a367dc"
+                  },
+                  "strokeOpacity": 0.9,
+                  "strokeWidth": 1.5
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "root": {
+    "properties": {
+      "interfaceColors": {
+        "settings": {
+          "background": {
+            "type": "Color",
+            "value": "#050505"
+          }
+        }
+      }
+    },
+    "settings": {
+      "fontFamily": "Verdana, sans-serif"
+    }
+  }
+}

@@ -14,6 +14,8 @@ export const getGroqResponse = async (instructions) => {
         content: instructions.user,
       },
     ],
-    model: "qwen/qwen3.8-27b",
+    // citation_options: "enabled",
+    model: "openai/gpt-oss-120b",
+    tools: [{type: "browser_search"}]
   });
 };
