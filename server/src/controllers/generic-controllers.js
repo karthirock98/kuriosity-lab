@@ -25,27 +25,37 @@ export const getUnsplashImages = async (req, res) => {
 export const investigateURL = async (req, res, next) => {
   try {
     const domain = req.body.domain;
+    const cleanDomain = domain
+        .trim()
+        .replace(/^https?:\/\//i, "")
+        .split(/[/?#]/)[0]
+        .replace(/:\d+$/, "")
+        .toLowerCase();
 
     if (!domain) {
       throw "Invalid Domain Address.";
     }
 
     // RDAP Details
-    const rdapDetails = await DomainInvestigationService.getRdapDetails(domain);
+    const rdapDetails = await DomainInvestigationService.getRdapDetails(cleanDomain);
     const normalizedData =
       await DomainInvestigationService.normalize(rdapDetails);
 
     // IP Address
-    const ipAddress = await DomainInvestigationService.ipAddress(domain);
+    const ipAddress = await DomainInvestigationService.ipAddress(cleanDomain);
 
     // HTTP Status
-    const {status} = await fetch(normalizeUrl(domain));
+    const { status } = await fetch(normalizeUrl(cleanDomain));
     res
       .status(200)
       .json(
         createResponse(
           200,
-          { rdapDetails: normalizedData, ipv4Address: ipAddress[0].address, httpStatus: status },
+          {
+            rdapDetails: normalizedData,
+            ipv4Address: ipAddress[0].address,
+            httpStatus: status,
+          },
           "OK",
         ),
       );
@@ -55,20 +65,30 @@ export const investigateURL = async (req, res, next) => {
   }
 };
 
-
 export const getQuoteOftheDay = async (req, res) => {
   try {
-    const quoteData = await axios.get("https://www.quoterism.com/api/quotes/quote-of-the-day", {
-      headers: {
-        "X-API-Key": process.env.QUOTERISM_KEY
-      }
-    })
-    if(quoteData.status === 200){
-      res.status(200).json(createResponse(quoteData.status, quoteData.data, quoteData.statusText));
-      return
+    const quoteData = await axios.get(
+      "https://www.quoterism.com/api/quotes/quote-of-the-day",
+      {
+        headers: {
+          "X-API-Key": process.env.QUOTERISM_KEY,
+        },
+      },
+    );
+    if (quoteData.status === 200) {
+      res
+        .status(200)
+        .json(
+          createResponse(
+            quoteData.status,
+            quoteData.data,
+            quoteData.statusText,
+          ),
+        );
+      return;
     }
   } catch (error) {
     res.status(500).json(createResponse(500, "", "Something Went Wrong!", ""));
     throw error;
   }
-}
+};

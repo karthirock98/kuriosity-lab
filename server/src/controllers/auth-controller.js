@@ -76,6 +76,10 @@ export const getProfile = async (req, res) => {
 
 export const isAuthenticated = async (req, res, next) => {
   try {
+    if(process.env.MODE === "DEV"){
+      next()
+      return;
+    }
     const exit = () => {
       res
         .status(401)

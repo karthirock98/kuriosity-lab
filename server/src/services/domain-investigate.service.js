@@ -5,21 +5,28 @@ import dns from "node:dns/promises";
 // THis class based service can be used to get all domain relates information
 class DomainInvestigationService {
   async getRdapDetails(domain) {
-    const rdapEndpoint = await getRdapEndpoint(domain)
-      .then(async (epq) => {
-        if (epq) {
-          const rdapResult = await axios.get(`${epq}domain/${domain}`);
-          return rdapResult.data;
-        } else {
-          return {
-            msg: "Unknown Domain Endpoint",
-          };
-        }
-      })
-      .catch((err) => {
-        return err.message;
-      });
-    return rdapEndpoint;
+    try {
+      const cleanDomain = domain
+        .trim()
+        .replace(/^https?:\/\//i, "")
+        .split(/[/?#]/)[0]
+        .replace(/:\d+$/, "")
+        .toLowerCase();
+
+      const rdapEndpoint = await getRdapEndpoint(cleanDomain);
+
+      if (!rdapEndpoint) {
+        return { msg: "Unknown Domain Endpoint" };
+      }
+
+      const rdapResult = await axios.get(
+        `${rdapEndpoint.replace(/\/+$/, "")}/domain/${cleanDomain}`,
+      );
+
+      return rdapResult.data;
+    } catch (err) {
+      return err.message;
+    }
   }
   async normalize(data) {
     const registrar = data.entities?.find((entity) =>
@@ -67,8 +74,8 @@ class DomainInvestigationService {
     };
   }
   async ipAddress(domain) {
-    const result = await dns.lookup(domain, {all: true})
-    return result
+    const result = await dns.lookup(domain, { all: true });
+    return result;
   }
 }
 export default new DomainInvestigationService();
