@@ -1,4 +1,5 @@
-import type { GenderizeResponse, QuoteOfTheDayResponse } from "@/types/generic.type";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { GenderizeResponse } from "@/types/generic.type";
 import axios, { type AxiosResponse } from "axios";
 const BASE_URL = "http://localhost:3333";
 
@@ -108,3 +109,14 @@ export const getQuoteBasedOnAuthorAndEmotion = async (payload: any) => {
     }
 };
 
+
+export const getCountryDetailsByCode = async (code: string) => {
+   const result: AxiosResponse<any> = await axios.get(
+      `${BASE_URL}/rest-countires/countries?code=${code}`,  { withCredentials: true },
+    );
+    if (result.status === 200) {
+      return result?.data || {};
+    } else {
+      return null;
+    }
+};

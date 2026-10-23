@@ -10,9 +10,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon start-kuriosity.js",
     "start:dev-i": "infisical run -- nodemon start-kuriosity.js",
-    "start:prod": "node start-kuriosity.js"
+    "start:prod": "node start-kuriosity.js",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@yusifaliyevpro/countries": "^5.2.6",
     "altcha-lib": "^2.3.2",
     "axios": "^1.20.0",
     "bcrypt": "^6.0.0",
@@ -26,6 +28,9 @@
     "pm2": "^7.0.4"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
     "nodemon": "^3.1.14"
   }
 }

@@ -7,7 +7,7 @@ import Unsplash from "@/pages/Unsplash";
 import InternetDetective from "@/pages/InternetDetective";
 import Hormones from "@/pages/Hormones";
 import Quotes from "@/pages/Quotes";
-import GameMap from "@/pages/GameMap";
+import WorldMap from "@/pages/WorldMap";
 
 const AppRoutes = () => {
     return (
@@ -21,7 +21,7 @@ const AppRoutes = () => {
                 <Route path="/detective" element={<InternetDetective />} />
                 <Route path="/hormones" element={<Hormones />} />
                 <Route path="/quotes" element={<Quotes />} />
-                <Route path="/maps" element={<GameMap />} />
+                <Route path="/maps" element={<WorldMap />} />
             </Route>
             <Route path="/" element={<Login />} />
         </Routes>
