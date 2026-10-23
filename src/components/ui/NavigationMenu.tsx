@@ -65,6 +65,12 @@ const NavigationMenuComp = () => {
               <NavigationMenuLink render={<Link to={"/hormones"} />}>
                 Inbuilt Drugs 
               </NavigationMenuLink>
+              <NavigationMenuLink render={<Link to={"/quotes"} />}>
+                Between the Lines
+              </NavigationMenuLink>
+              <NavigationMenuLink render={<Link to={"/maps"} />}>
+                Maps
+              </NavigationMenuLink>
               <hr />
               <NavigationMenuLink
                 className={"cursor-pointer"}
