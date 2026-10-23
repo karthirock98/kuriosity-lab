@@ -1,41 +1,37 @@
+
 import { APP_CONSTANTS } from "@/lib/app.constants";
-import axios from "axios"
-const BASE_URL = "http://localhost:3333"
+import apiAxios from "./api-axios";
+
+const BASE_URL = "http://localhost:3333";
 
 export const loginUser = async (payload: any) => {
-    try {
-        const res = await axios.post(
-            `${BASE_URL}/auth/login`,
-            payload,
-            { withCredentials: true }
-        );
+  const res = await apiAxios.post(
+    `${BASE_URL}/auth/login`,
+    payload,
+  );
 
-        return res;
-    } catch (error) {
-        throw error;
-    }
+  return res;
 };
 
 export const authService = {
-    isAuthenticated() {
-        const token = sessionStorage.getItem(APP_CONSTANTS.TOKEN);
-        if (token) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
+  isAuthenticated() {
+    return !!sessionStorage.getItem(APP_CONSTANTS.TOKEN);
+  },
+};
 
 export const setSession = (value: string) => {
-    sessionStorage.setItem(APP_CONSTANTS.TOKEN, value)
-}
+  sessionStorage.setItem(APP_CONSTANTS.TOKEN, value);
+};
 
 export const getToken = () => {
-    return sessionStorage.getItem(APP_CONSTANTS.TOKEN)
-}
+  return sessionStorage.getItem(APP_CONSTANTS.TOKEN);
+};
 
-export const LogOut = () => {
+export const LogOut = async () => {
+  try {
+    await apiAxios.get(`${BASE_URL}/auth/logout`);
+  } finally {
     sessionStorage.clear();
-    axios.get("http://localhost:3333/auth/logout", {withCredentials: true})
-}
+    window.location.href = "/login";
+  }
+};
