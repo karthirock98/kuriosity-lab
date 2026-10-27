@@ -3,6 +3,7 @@ import DomainInvestigationService from "../services/domain-investigate.service.j
 import { createResponse } from "../utils/common-utils.js";
 import axios from "axios";
 
+
 export const getUnsplashImages = async (req, res) => {
   try {
     const searchValue = req?.query?.searchValue;
@@ -26,18 +27,19 @@ export const investigateURL = async (req, res, next) => {
   try {
     const domain = req.body.domain;
     const cleanDomain = domain
-        .trim()
-        .replace(/^https?:\/\//i, "")
-        .split(/[/?#]/)[0]
-        .replace(/:\d+$/, "")
-        .toLowerCase();
+      .trim()
+      .replace(/^https?:\/\//i, "")
+      .split(/[/?#]/)[0]
+      .replace(/:\d+$/, "")
+      .toLowerCase();
 
     if (!domain) {
       throw "Invalid Domain Address.";
     }
 
     // RDAP Details
-    const rdapDetails = await DomainInvestigationService.getRdapDetails(cleanDomain);
+    const rdapDetails =
+      await DomainInvestigationService.getRdapDetails(cleanDomain);
     const normalizedData =
       await DomainInvestigationService.normalize(rdapDetails);
 
@@ -46,19 +48,17 @@ export const investigateURL = async (req, res, next) => {
 
     // HTTP Status
     const { status } = await fetch(normalizeUrl(cleanDomain));
-    res
-      .status(200)
-      .json(
-        createResponse(
-          200,
-          {
-            rdapDetails: normalizedData,
-            ipv4Address: ipAddress[0].address,
-            httpStatus: status,
-          },
-          "OK",
-        ),
-      );
+    res.status(200).json(
+      createResponse(
+        200,
+        {
+          rdapDetails: normalizedData,
+          ipv4Address: ipAddress[0].address,
+          httpStatus: status,
+        },
+        "OK",
+      ),
+    );
   } catch (error) {
     res.status(500).json(createResponse(500, "", "Something Went Wrong!", ""));
     throw error;
