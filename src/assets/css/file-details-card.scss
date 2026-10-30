@@ -1,0 +1,68 @@
+.fcard-card {
+  width: 100%;
+  max-width: 320px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #e5e5e0;
+  border-radius: 12px;
+  color: #1f1f1d;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.fcard-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.fcard-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #e6f1fb;
+  color: #185fa5;
+  flex-shrink: 0;
+}
+
+.fcard-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fcard-label {
+  margin: 0;
+  font-size: 12px;
+  color: #6b6b66;
+}
+
+.fcard-name {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.fcard-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e5e0;
+  font-size: 13px;
+}
+
+.fcard-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fcard-key {
+  color: #6b6b66;
+}
+
+.fcard-value {
+  font-weight: 500;
+}

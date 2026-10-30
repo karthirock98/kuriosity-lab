@@ -1,5 +1,6 @@
 import { decrypt } from "../helpers/decrypt.js";
 import { encrypt } from "../helpers/encrypt.js";
+import { validateAuthCookie } from "../services/auth.service.js";
 import { createResponse } from "../utils/common-utils.js";
 
 export const logOut = async (req, res) => {
@@ -71,46 +72,17 @@ export const getProfile = async (req, res) => {
       .json(
         createResponse(200, { userName: "Sivakarthikeyan" }, "Success", ""),
       );
-  } catch (error) { }
+  } catch (error) {
+    //
+  }
 };
 
 export const isAuthenticated = async (req, res, next) => {
   try {
-    if(process.env.MODE === "DEV"){
-      next()
-      return;
-    }
-    const exit = () => {
-      res
-        .status(401)
-        .json(
-          createResponse(401, {}),
-        );
-    };
-    const authCookie = req.cookies?.auth;
-
-    if (!authCookie) {
-      // return false;
-      exit();
-    }
-
-    const decryptedCookie = await decrypt(authCookie);
-
-    if (!decryptedCookie?.expiresAt) {
-      // return false;.
-      exit();
-    }
-
-    if (Date.now() > decryptedCookie.expiresAt) {
-      exit()
-    }
-
+    const decryptedCookie = await validateAuthCookie(req.cookies?.auth);
+    req.auth = decryptedCookie;
     next();
   } catch (error) {
-    res
-      .status(401)
-      .json(
-        createResponse(401, {}),
-      );
+    return res.status(401).json(createResponse(401, {}));
   }
 };

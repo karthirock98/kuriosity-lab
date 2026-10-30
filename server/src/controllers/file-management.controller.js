@@ -3,20 +3,34 @@ import fs from "node:fs/promises";
 import backBlazeClient from "../services/back-blaze-client.js";
 import imageDbModel from "../models/image-db.model.js";
 import { createResponse } from "../utils/common-utils.js";
+import { emitToSocket, getSocketId } from "../services/socket-service.js";
+import { fileControllerSocketMessages } from "../services/file-management-socket-handler.js";
+import { intentionalSleep } from "../helpers/generic-helper.js";
 
 export const saveImageinDb = async (req, res) => {
   try {
+    const socketId = getSocketId(req.auth?.username);
+    if(socketId){
+      await fileControllerSocketMessages(socketId, 0, 'db')
+      await intentionalSleep(2000)
+    }
     if (req?.file) {
+      if(socketId){
+      await fileControllerSocketMessages(socketId, 1, 'db')
+      await intentionalSleep(1000)
+    }
       const fileName = req.file.originalname.replace(
         req.file.originalname.split(".").pop(),
         req.file.mimetype.split("/").pop(),
       );
+      
       const imageDbPayload = {
         name: fileName,
         mimetype: req.file.mimetype,
         buffer: req.file.buffer,
       };
-      const response = await imageDbModel.storeImage(imageDbPayload);
+      
+      const response = await imageDbModel.storeImage(imageDbPayload, socketId);
       res.status(200).json(response);
     }
   } catch (error) {
@@ -27,6 +41,11 @@ export const saveImageinDb = async (req, res) => {
 
 export const saveImageinServer = async (req, res) => {
   try {
+    const socketId = getSocketId(req.auth?.username);
+    if(socketId){
+      await fileControllerSocketMessages(socketId, 0, 'server')
+      await intentionalSleep(2000)
+    }
     if (req?.file) {
       const uploadDir = path.join(process.cwd(), "uploads", "images");
 
@@ -203,11 +222,15 @@ export const delteFile = async (req, res) => {
             break;
         }
       } else {
-        throw Error("No File Found")
+        throw Error("No File Found");
       }
     }
   } catch (error) {
-    res.status(500).json(createResponse(500, "", error.message || "Something Went Wrong!", ""));
+    res
+      .status(500)
+      .json(
+        createResponse(500, "", error.message || "Something Went Wrong!", ""),
+      );
     throw error;
   }
 };

@@ -21,6 +21,7 @@ import { SESSION_STORAGE_KEYS } from "@/lib/app.constants";
 import { getGenderByName, quoteOfTheDay } from "@/services/common.service";
 import type { QuoteOfTheDayResponse } from "@/types/generic.type";
 import QuoteOfTheDay from "@/components/ui/QuoteOfTheDay";
+import { startSocket } from "@/services/socket.service";
 
 function Login() {
   const [userName, setUserName] = useState<string>("");
@@ -28,13 +29,9 @@ function Login() {
     useState<QuoteOfTheDayResponse>();
   const navigation = useNavigate();
   const quoteRef = useRef<QuoteBannerRef>(null);
+  
   // Blinking stars
   useEffect(() => {
-    quoteOfTheDay().then((res) => {
-      if (res) {
-        setQuoteOftheDay(res.data);
-      }
-    });
     const stars = document.querySelector(".stars");
 
     if (!stars) return;
@@ -108,13 +105,14 @@ function Login() {
       sessionStorage.setItem(SESSION_STORAGE_KEYS.GENDER, gender?.gender || "");
 
       const response: any = await loginUser({
-        userName: "test",
+        userName: userName,
         password: "test123",
         altcha: altchaPayload,
       });
 
       if (response?.data?.statusCode === 200) {
         setSession("DUMMY");
+        startSocket()
         navigation("/quotes");
       } else {
         setAltchaPayload("");

@@ -1,10 +1,19 @@
 import dbPool from "../db.js";
+import { intentionalSleep } from "../helpers/generic-helper.js";
+import { fileControllerSocketMessages } from "../services/file-management-socket-handler.js";
 
 class ImageDB {
-  async storeImage(data) {
+  async storeImage(data, socketId) {
+    if(socketId){
+      await fileControllerSocketMessages(socketId, 3, 'db')
+      await intentionalSleep(2000)
+    }
     const result = await dbPool.execute('INSERT INTO images (filename, mime_type, image_data, mode) values (?, ?, ?, ?)', [
         data.name, data.mimetype, data.buffer, 'db'
     ]);
+    if(socketId){
+      await fileControllerSocketMessages(socketId, 4, 'db')
+    }
     return result[0];
   }
   async storeImagePath(data) {

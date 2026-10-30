@@ -7,7 +7,12 @@ import cookieParser from "cookie-parser";
 import GENERIC_ROUTES from "./src/routes/generic-routes.js";
 import GROQ_ROUTES from "./src/routes/groq-routes.js";
 import COUNTRIES_ROUTES from "./src/routes/countries-routes.js";
+import { createServer } from "node:http";
+import { initializeSocket } from "./src/services/socket-service.js";
 const app_init = express();
+
+const socket_http_server = createServer(app_init);
+initializeSocket(socket_http_server);
 
 app_init.use(
   cors({
@@ -27,6 +32,6 @@ app_init.use("/auth", auth_routers);
 app_init.use("/generic", GENERIC_ROUTES)
 app_init.use("/groq", GROQ_ROUTES)
 app_init.use("/rest-countires", COUNTRIES_ROUTES)
-app_init.listen(process.env.PORT, () => {
+socket_http_server.listen(process.env.PORT, () => {
   console.log(`Listening the Server ${process.env.PORT}`, new Date());
 });

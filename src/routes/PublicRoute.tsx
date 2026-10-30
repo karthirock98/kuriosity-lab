@@ -3,7 +3,7 @@ import { authService } from "../services/auth.service";
 
 const PublicRoute = () => {
   if (authService.isAuthenticated()) {
-    return <Navigate to="/landing" replace />;
+    return <Navigate to="/quotes" replace />;
   }
 
   return <Outlet />;

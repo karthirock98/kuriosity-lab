@@ -71,6 +71,9 @@ const NavigationMenuComp = () => {
               <NavigationMenuLink render={<Link to={"/maps"} />}>
                 Maps
               </NavigationMenuLink>
+              <NavigationMenuLink render={<Link to={"/file-box"} />}>
+                File Box
+              </NavigationMenuLink>
               <hr />
               <NavigationMenuLink
                 className={"cursor-pointer"}

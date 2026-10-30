@@ -31,3 +31,6 @@ export const fileSizeValidator = (file, type, reqSize) => {
 
   return false;
 };
+
+
+export const intentionalSleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));

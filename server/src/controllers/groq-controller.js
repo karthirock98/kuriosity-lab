@@ -1,8 +1,13 @@
 import { getGroqResponse } from "../services/groq-main.js";
+import { emitToSocket, getSocketId } from "../services/socket-service.js";
 import { createResponse } from "../utils/common-utils.js";
 
 export const getAIQuoteResponse = async (req, res, next) => {
   try {
+    const socketId = getSocketId(req.auth.username);
+    if (socketId) {
+      emitToSocket(socketId, "quote-processing", "Started");
+    }
     const AIResponse = await getGroqResponse({
       system: `You are a quote retrieval engine.
                 Return exactly ONE authentic quote in this format:

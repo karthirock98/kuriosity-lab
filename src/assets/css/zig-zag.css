@@ -1,0 +1,123 @@
+.zz {
+  --zz-box-w: 130px;           /* widen/heighten if your text is longer */
+  --zz-box-h: 54px;
+  --zz-cell-x: calc(var(--zz-box-w) + 50px);   /* + horizontal gap (50px = 5 dots) */
+  --zz-cell-y: calc(var(--zz-box-h) + 30px);   /* + vertical gap   (30px = 3 dots) */
+  --zz-done: #16a34a;
+  --zz-active: #4ade80;
+  --zz-pending: #4b5563;
+
+  display: grid;
+  grid-auto-rows: var(--zz-cell-y);
+  width: max-content;
+}
+
+/* ---------- boxes ---------- */
+.zz-step {
+  position: relative;
+  width: var(--zz-box-w);
+  height: var(--zz-box-h);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border: 2px solid var(--zz-pending);
+  border-radius: 8px;
+  background: #111827;
+  color: #9ca3af;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.zz-label {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* max 2 lines, then ... */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.zz-check {
+  color: var(--zz-active);
+}
+
+.zz-step--done {
+  border-color: var(--zz-done);
+  color: #fff;
+}
+
+.zz-step--in-progress {
+  border-color: var(--zz-active);
+  color: #fff;
+  animation: zz-box-pulse 1.4s ease-out infinite;
+}
+
+/* ---------- dotted connectors ---------- */
+.zz-conn {
+  position: absolute;
+  --c: var(--zz-pending);
+  --dot-bg: radial-gradient(circle, var(--c) 2px, transparent 2.5px);
+}
+.zz-conn--done   { --c: var(--zz-done); }
+.zz-conn--active { --c: var(--zz-done); }   /* dots already behind us are green */
+
+/* horizontal: 50px long, 5 dots, 10px spacing */
+.zz-conn--right,
+.zz-conn--left {
+  width: 50px;
+  height: 10px;
+  top: calc(50% - 5px);
+  background: var(--dot-bg) 0 0 / 10px 10px repeat-x;
+}
+.zz-conn--right { left: calc(100% + 2px); }   /* +2px = box border */
+.zz-conn--left  { right: calc(100% + 2px); }
+
+/* vertical: 30px long, 3 dots */
+.zz-conn--down {
+  width: 10px;
+  height: 30px;
+  left: calc(50% - 5px);
+  top: calc(100% + 2px);
+  background: var(--dot-bg) 0 0 / 10px 10px repeat-y;
+}
+
+/* ---------- moving dot: hops from dot to dot, stays inside the line ---------- */
+.zz-dot {
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--zz-active);
+}
+
+.zz-conn--right .zz-dot {
+  left: 0;
+  animation: zz-hop-right 1s steps(5, jump-none) infinite, zz-dot-pulse 1s ease-out infinite;
+}
+.zz-conn--left .zz-dot {
+  right: 0;
+  animation: zz-hop-left 1s steps(5, jump-none) infinite, zz-dot-pulse 1s ease-out infinite;
+}
+.zz-conn--down .zz-dot {
+  left: 0;
+  animation: zz-hop-down 1s steps(3, jump-none) infinite, zz-dot-pulse 1s ease-out infinite;
+}
+
+/* travel = (dots - 1) * 10px, so it lands exactly on each dot and never touches a box */
+@keyframes zz-hop-right { from { transform: translateX(0); } to { transform: translateX(40px); } }
+@keyframes zz-hop-left  { from { transform: translateX(0); } to { transform: translateX(-40px); } }
+@keyframes zz-hop-down  { from { transform: translateY(0); } to { transform: translateY(20px); } }
+
+@keyframes zz-dot-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+  100% { box-shadow: 0 0 0 5px rgba(74, 222, 128, 0); }
+}
+
+@keyframes zz-box-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
+  100% { box-shadow: 0 0 0 12px rgba(74, 222, 128, 0); }
+}
