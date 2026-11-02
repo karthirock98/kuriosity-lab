@@ -23,7 +23,7 @@ function FileDropBox({
       )}
       {!selectedFile && (
         <div className="file-folder-container">
-          <Button className="absolute -top-25" onClick={onBack}>
+          <Button type="button" className="absolute -top-25" onClick={onBack}>
             <ArrowLeft /> Go Back
           </Button>
           <div className="file-folder-icon">
@@ -62,7 +62,7 @@ function FileDropBox({
               type={selectedFile.type}
             />
           </div>
-          <Button className="flex ml-[70%] w-max mt-2" onClick={onProceed}>
+          <Button className="flex ml-[70%] w-max mt-2" type="button" onClick={(e) => {e.preventDefault(); onProceed()}}>
             Next <ArrowRight />
           </Button>
         </>

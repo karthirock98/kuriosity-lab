@@ -10,26 +10,26 @@ import { intentionalSleep } from "../helpers/generic-helper.js";
 export const saveImageinDb = async (req, res) => {
   try {
     const socketId = getSocketId(req.auth?.username);
-    if(socketId){
-      await fileControllerSocketMessages(socketId, 0, 'db')
-      await intentionalSleep(2000)
+    if (socketId) {
+      await fileControllerSocketMessages(socketId, 0, "db");
+      await intentionalSleep(2000);
     }
     if (req?.file) {
-      if(socketId){
-      await fileControllerSocketMessages(socketId, 1, 'db')
-      await intentionalSleep(1000)
-    }
+      if (socketId) {
+        await fileControllerSocketMessages(socketId, 1, "db");
+        await intentionalSleep(1000);
+      }
       const fileName = req.file.originalname.replace(
         req.file.originalname.split(".").pop(),
         req.file.mimetype.split("/").pop(),
       );
-      
+
       const imageDbPayload = {
         name: fileName,
         mimetype: req.file.mimetype,
         buffer: req.file.buffer,
       };
-      
+
       const response = await imageDbModel.storeImage(imageDbPayload, socketId);
       res.status(200).json(response);
     }
@@ -40,43 +40,65 @@ export const saveImageinDb = async (req, res) => {
 };
 
 export const saveImageinServer = async (req, res) => {
+  const socketId = getSocketId(req.auth?.username);
+  const storage = "server";
+
   try {
-    const socketId = getSocketId(req.auth?.username);
-    if(socketId){
-      await fileControllerSocketMessages(socketId, 0, 'server')
-      await intentionalSleep(2000)
-    }
-    if (req?.file) {
-      const uploadDir = path.join(process.cwd(), "uploads", "images");
+    // Step 3: Server validation
+    await runProcessingStep(socketId, storage, 3, async () => {
+      if (!req.file) {
+        throw new Error("No file uploaded");
+      }
+    });
 
-      // Create directory if it doesn't exist
+    // Step 4: Rename file based on MIME
+    const { filename, fileName } = await runProcessingStep(
+      socketId,
+      storage,
+      4,
+      async () => {
+        const extension = path.extname(req.file.originalname);
+        const filename = `${crypto.randomUUID()}${extension}`;
+
+        const fileName = req.file.originalname.replace(
+          /\.[^.]+$/,
+          `.${req.file.mimetype.split("/").pop()}`,
+        );
+
+        return { filename, fileName };
+      },
+    );
+
+    const uploadDir = path.join(process.cwd(), "uploads", "images");
+    const filePath = path.join(uploadDir, filename);
+
+    // Step 5: Upload to server directory
+    await runProcessingStep(socketId, storage, 5, async () => {
       await fs.mkdir(uploadDir, { recursive: true });
+      await fs.writeFile(filePath, req.file.buffer);
+    });
 
-      // Generate a unique filename
-      const extension = path.extname(req?.file.originalname);
-      const filename = `${crypto.randomUUID()}${extension}`;
-
-      const filePath = path.join(uploadDir, filename);
-
-      // Save image buffer to disk
-      await fs.writeFile(filePath, req?.file.buffer);
-
-      const fileName = req.file.originalname.replace(
-        req.file.originalname.split(".").pop(),
-        req.file.mimetype.split("/").pop(),
-      );
+    // Step 6: Store details in DB
+    const response = await runProcessingStep(socketId, storage, 6, async () => {
       const imageDbPayload = {
         name: fileName,
         mimetype: req.file.mimetype,
         path: filePath,
-        mode: "server",
+        mode: storage,
       };
-      const response = await imageDbModel.storeImagePath(imageDbPayload);
-      res.status(200).json(response);
-    }
+
+      return await imageDbModel.storeImagePath(imageDbPayload);
+    });
+
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json(createResponse(500, "", "Something Went Wrong!", ""));
-    throw error;
+    console.error("Image upload failed:", error);
+
+    if (!res.headersSent) {
+      res
+        .status(500)
+        .json(createResponse(500, "", "Something Went Wrong!", ""));
+    }
   }
 };
 
@@ -231,6 +253,43 @@ export const delteFile = async (req, res) => {
       .json(
         createResponse(500, "", error.message || "Something Went Wrong!", ""),
       );
+    throw error;
+  }
+};
+
+export const runProcessingStep = async (
+  socketId,
+  storage,
+  stepId,
+  callback,
+  delay = 2000
+) => {
+  try {
+    if (socketId) {
+      await fileControllerSocketMessages(
+        socketId, stepId, storage, "processing"
+      );
+
+      await intentionalSleep(delay);
+    }
+
+    const result = await callback();
+
+    if (socketId) {
+      await fileControllerSocketMessages(
+        socketId, stepId, storage, "completed"
+      );
+    }
+
+    return result;
+
+  } catch (error) {
+    if (socketId) {
+      await fileControllerSocketMessages(
+        socketId, stepId, storage, "failed"
+      );
+    }
+
     throw error;
   }
 };

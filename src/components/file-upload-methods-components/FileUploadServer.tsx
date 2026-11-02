@@ -3,9 +3,18 @@ import { Button } from "@/components/ui/button";
 import MethodExplanationCard from "./MethodExplanationCard";
 import serverContent from "@/assets/content/server-upload.md?raw";
 import FileDropBox from "./FileDropBox";
-import ZigzagProgress, { type ZigzagStep } from "./Zigzagprogress";
-import { uploadImageApi } from "@/services/file-management.service";
+import ZigzagProgress from "./Zigzagprogress";
+import {
+  fileStatusService,
+  getImageById,
+  uploadImageApi,
+  useFileStatusMsgProcess,
+  type FileStatusMessage,
+} from "@/services/file-management.service";
 import { socket } from "@/services/socket.service";
+import allmessages from "../../../shared/file-management-messages.json";
+import { intentionalSleep } from "@/utils/generic.utils";
+import { RefreshCcwIcon } from "lucide-react";
 
 type Visibility = "hidden" | "in" | "out";
 
@@ -14,8 +23,18 @@ type ElementAnimation = {
     uploadBtn: Visibility;
     uploadSteps: Visibility;
     uploadBox: Visibility;
+    progressBox: Visibility;
     resultBox: Visibility;
   };
+};
+const initialElementAnimation: ElementAnimation = {
+  server: {
+    uploadBtn: "in",
+    uploadSteps: "hidden",
+    uploadBox: "hidden",
+    progressBox: "hidden",
+    resultBox: "hidden",
+  },
 };
 type BoxName = keyof ElementAnimation;
 type ElementName = keyof ElementAnimation["server"];
@@ -24,11 +43,13 @@ const animClass = (v: Visibility) =>
   v === "in" ? "fade-in" : v === "out" ? "fade-out" : "hidden";
 
 const FileUploadServer = () => {
+  const messages = useFileStatusMsgProcess();
   const [element, setElementAnimation] = useState<ElementAnimation>({
     server: {
       uploadBtn: "in", // fades in on load
       uploadSteps: "hidden",
       uploadBox: "hidden", // no animation on load
+      progressBox: "hidden", // no animation on load
       resultBox: "hidden", // no animation on load
     },
   });
@@ -48,34 +69,49 @@ const FileUploadServer = () => {
   };
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [uploadedImage, setUploadedImage] = useState<any>();
+  const [uploadFailed, setUploadFailed] = useState<boolean>(false);
 
   const upload = async () => {
+    fileStatusService.updateStatus(1, "processing");
+    await intentionalSleep(1500);
     const payload = new FormData();
     if (selectedFile) {
+      fileStatusService.updateStatus(1, "completed");
+      fileStatusService.updateStatus(2, "processing");
+      await intentionalSleep(1500);
+      fileStatusService.updateStatus(2, "completed");
       payload.append("image", selectedFile);
       const response = await uploadImageApi(payload, "server");
       console.log(response);
+      if (response) {
+        const image = await getImageById(response.data?.insertId);
+        if (image) {
+          const url = URL.createObjectURL(image);
+          setUploadedImage(url);
+        }
+        changeElementVisibility("server", "progressBox", "out");
+        setTimeout(() => {
+          changeElementVisibility("server", "resultBox", "in");
+          fileStatusService.reset();
+        }, 1000);
+      }
     }
   };
-
-  const [message, setMessage] = useState<ZigzagStep[]>([]);
 
   useEffect(() => {
     const handleFileManagement = (data: {
       mode: string;
       message: string;
       step: number;
+      status: FileStatusMessage["status"];
     }) => {
       console.log("Received:", data);
-
-      setMessage((prev) => [
-        ...prev,
-        {
-          id: data.step,
-          status: "done",
-          label: data.message,
-        },
-      ]);
+      fileStatusService.updateStatus(data.step, data.status);
+      if (data.status === "failed") {
+        setUploadFailed(true);
+      }
     };
 
     socket.on("file-management", handleFileManagement);
@@ -84,6 +120,16 @@ const FileUploadServer = () => {
       socket.off("file-management", handleFileManagement);
     };
   }, []);
+
+  const resetAll = () => {
+    setUploadedImage(null);
+    setSelectedFile(null);
+    changeElementVisibility("server", "resultBox", "out");
+    setTimeout(() => {
+      changeElementVisibility("server", "uploadBtn", "in");
+    }, 1000);
+    setElementAnimation(initialElementAnimation)
+  };
 
   return (
     <div className="server-section full-h-wall">
@@ -133,17 +179,34 @@ const FileUploadServer = () => {
           }}
           onProceed={() => {
             upload();
-            changeElementVisibility("server", "resultBox", "in");
+            changeElementVisibility("server", "progressBox", "in");
             setTimeout(() => {
               changeElementVisibility("server", "uploadBox", "out");
+              fileStatusService.initialize(allmessages.server);
             }, 500);
           }}
-          onFileSelect={(file) => setSelectedFile(file)}
+          onFileSelect={(file) => {
+            setSelectedFile(file);
+          }}
         />
       </div>
 
+      {/* progress box */}
+      <div className={animClass(element.server.progressBox)}>
+        <ZigzagProgress columns={2} steps={messages} />
+        {uploadFailed && (
+          <Button
+            onClick={resetAll}
+            className="flex mx-auto mt-2 -bottom-12.5 left-1/3 w-max absolute"
+          >
+            <RefreshCcwIcon /> Start Again
+          </Button>
+        )}
+      </div>
+
+      {/* result box */}
       <div
-        className={animClass(element.server.resultBox)}
+        className={`image-frame ${animClass(element.server.resultBox)}`}
         onClick={() => {
           changeElementVisibility("server", "resultBox", "out");
           setTimeout(() => {
@@ -151,8 +214,14 @@ const FileUploadServer = () => {
           }, 1000);
         }}
       >
-        {/* <div>{message}</div> */}
-        <ZigzagProgress columns={2} steps={message} />
+        <img src={uploadedImage} alt="Uploaded preview" />
+        <span className="image-frame-label">Uploaded successfully</span>
+        <Button
+          onClick={resetAll}
+          className="flex mx-auto mt-2 -bottom-12.5 left-1/3 w-max absolute"
+        >
+          <RefreshCcwIcon /> Start Again
+        </Button>
       </div>
     </div>
   );

@@ -1,90 +1,140 @@
 .zz {
-  --zz-box-w: 130px;           /* widen/heighten if your text is longer */
-  --zz-box-h: 54px;
-  --zz-cell-x: calc(var(--zz-box-w) + 50px);   /* + horizontal gap (50px = 5 dots) */
-  --zz-cell-y: calc(var(--zz-box-h) + 30px);   /* + vertical gap   (30px = 3 dots) */
-  --zz-done: #16a34a;
+  /* ---- tweak these ---- */
+  --zz-box-w: 180px;          /* box width; text wraps, box grows in height */
+  --zz-gap-x: 50px;           /* horizontal connector length (5 dots)       */
+  --zz-gap-y: 30px;           /* vertical connector length   (3 dots)       */
+
+  --zz-surface: #0f172a;
+  --zz-text: #e2e8f0;
+  --zz-muted: #94a3b8;
+  --zz-border: rgba(148, 163, 184, 0.28);
+  --zz-done: #22c55e;
   --zz-active: #4ade80;
-  --zz-pending: #4b5563;
+  --zz-failed: #ef4444;
+  --zz-pending-dot: rgba(148, 163, 184, 0.6);
+  --zz-bw: 1.5px;             /* box border width */
 
   display: grid;
-  grid-auto-rows: var(--zz-cell-y);
+  column-gap: var(--zz-gap-x);
+  row-gap: var(--zz-gap-y);
   width: max-content;
 }
 
 /* ---------- boxes ---------- */
 .zz-step {
   position: relative;
-  width: var(--zz-box-w);
-  height: var(--zz-box-h);
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 4px 8px;
-  border: 2px solid var(--zz-pending);
-  border-radius: 8px;
-  background: #111827;
-  color: #9ca3af;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 1.25;
-  text-align: center;
+  gap: 12px;
+  min-height: 60px;           /* grows with text; boxes in a row match height */
+  padding: 12px 14px;
+  border: var(--zz-bw) solid var(--zz-border);
+  border-radius: 14px;
+  background: var(--zz-surface);
+  color: var(--zz-muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.28);
+  transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .zz-label {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;       /* max 2 lines, then ... */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  overflow-wrap: anywhere;
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;    /* show ALL text, wrap long words too */
 }
 
-.zz-check {
-  color: var(--zz-active);
+.zz-step--completed {
+  color: var(--zz-text);
+  border-color: rgba(34, 197, 94, 0.55);
 }
 
-.zz-step--done {
-  border-color: var(--zz-done);
+.zz-step--processing {
   color: #fff;
-}
-
-.zz-step--in-progress {
   border-color: var(--zz-active);
+  animation: zz-box-pulse 1.6s ease-out infinite;
+}
+
+.zz-step--failed {
+  color: #fecaca;
+  border-color: var(--zz-failed);
+}
+
+/* ---------- status icon ---------- */
+.zz-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.zz-icon--pending {
+  border: 1.5px solid var(--zz-pending-dot);
+  color: var(--zz-muted);
+}
+
+.zz-icon--completed {
+  background: var(--zz-done);
   color: #fff;
-  animation: zz-box-pulse 1.4s ease-out infinite;
+  animation: zz-pop 0.35s ease-out;
+}
+
+.zz-icon--failed {
+  background: var(--zz-failed);
+  color: #fff;
+}
+
+.zz-icon--processing {
+  background: rgba(74, 222, 128, 0.12);
+}
+
+.zz-spinner {
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 2.5px solid rgba(74, 222, 128, 0.25);
+  border-top-color: var(--zz-active);
+  border-radius: 50%;
+  animation: zz-spin 0.8s linear infinite;
 }
 
 /* ---------- dotted connectors ---------- */
 .zz-conn {
   position: absolute;
-  --c: var(--zz-pending);
-  --dot-bg: radial-gradient(circle, var(--c) 2px, transparent 2.5px);
+  --c: var(--zz-pending-dot);
+  --dot-bg: radial-gradient(circle, var(--c) 2.5px, transparent 3px);
 }
-.zz-conn--done   { --c: var(--zz-done); }
-.zz-conn--active { --c: var(--zz-done); }   /* dots already behind us are green */
+.zz-conn--completed,
+.zz-conn--active { --c: var(--zz-done); }   /* dots already travelled are green */
+.zz-conn--failed { --c: var(--zz-failed); }
 
-/* horizontal: 50px long, 5 dots, 10px spacing */
+/* horizontal: 5 dots, 10px spacing */
 .zz-conn--right,
 .zz-conn--left {
-  width: 50px;
+  width: var(--zz-gap-x);
   height: 10px;
   top: calc(50% - 5px);
   background: var(--dot-bg) 0 0 / 10px 10px repeat-x;
 }
-.zz-conn--right { left: calc(100% + 2px); }   /* +2px = box border */
-.zz-conn--left  { right: calc(100% + 2px); }
+.zz-conn--right { left: calc(100% + var(--zz-bw)); }
+.zz-conn--left  { right: calc(100% + var(--zz-bw)); }
 
-/* vertical: 30px long, 3 dots */
+/* vertical: 3 dots, hangs below the last box of the row */
 .zz-conn--down {
   width: 10px;
-  height: 30px;
+  height: var(--zz-gap-y);
   left: calc(50% - 5px);
-  top: calc(100% + 2px);
+  top: calc(100% + var(--zz-bw));
   background: var(--dot-bg) 0 0 / 10px 10px repeat-y;
 }
 
-/* ---------- moving dot: hops from dot to dot, stays inside the line ---------- */
+/* ---------- moving dot: hops dot to dot, never leaves the line ---------- */
 .zz-dot {
   position: absolute;
   top: 0;
@@ -107,7 +157,7 @@
   animation: zz-hop-down 1s steps(3, jump-none) infinite, zz-dot-pulse 1s ease-out infinite;
 }
 
-/* travel = (dots - 1) * 10px, so it lands exactly on each dot and never touches a box */
+/* travel = (dots - 1) * 10px */
 @keyframes zz-hop-right { from { transform: translateX(0); } to { transform: translateX(40px); } }
 @keyframes zz-hop-left  { from { transform: translateX(0); } to { transform: translateX(-40px); } }
 @keyframes zz-hop-down  { from { transform: translateY(0); } to { transform: translateY(20px); } }
@@ -118,6 +168,60 @@
 }
 
 @keyframes zz-box-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6); }
-  100% { box-shadow: 0 0 0 12px rgba(74, 222, 128, 0); }
+  0%   { box-shadow: 0 8px 20px rgba(2, 6, 23, 0.28), 0 0 0 0 rgba(74, 222, 128, 0.5); }
+  100% { box-shadow: 0 8px 20px rgba(2, 6, 23, 0.28), 0 0 0 12px rgba(74, 222, 128, 0); }
+}
+
+@keyframes zz-spin { to { transform: rotate(360deg); } }
+
+@keyframes zz-pop {
+  0%   { transform: scale(0.6); }
+  70%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zz-step--processing,
+  .zz-icon--completed,
+  .zz-spinner,
+  .zz-dot { animation-duration: 0s; animation: none; }
+}
+
+/* // */
+.image-frame {
+  position: relative;
+  width: 280px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.06),
+    0 15px 35px rgba(0, 0, 0, 0.12);
+
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  img {
+    display: block;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 7px;
+    background: #f3f4f6;
+  }
+
+  .image-frame-label {
+    display: block;
+    padding-top: 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.4px;
+  }
+
+  &:hover {
+    transform: translateY(-5px) rotate(-1deg);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+  }
 }

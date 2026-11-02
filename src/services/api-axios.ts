@@ -49,6 +49,7 @@ apiAxios.interceptors.response.use(
     notifyLoading();
 
     if (error.response?.status === 401) {
+      sessionStorage.clear()
       const url = error.config?.url ?? "";
 
       if (!url.includes("/login")) {

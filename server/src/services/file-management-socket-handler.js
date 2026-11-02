@@ -24,14 +24,14 @@ const messages = {
 
 import { emitToSocket } from "./socket-service.js";
 
-export const fileControllerSocketMessages = (socketid, step, mode) => {
-  const message = messages[mode]?.[step];
+export const fileControllerSocketMessages = (socketid, step, mode, status) => {
+  // const message = messages[mode]?.[step];
 
-  if (!message || !socketid) return;
+  if (!socketid) return;
 
   emitToSocket(socketid, "file-management", {
     mode,
-    message,
     step,
+    status
   });
 };

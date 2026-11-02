@@ -1,0 +1,28 @@
+{
+  "server": [
+    "Validating the selected file type",
+    "Loading the file into memory",
+    "Performing server-side file validation",
+    "Renaming the file based on its MIME type",
+    "Uploading the file to the server directory",
+    "Storing file details in the database"
+  ],
+  "db": [
+    "Validating the selected file type",
+    "Preparing the file for database storage",
+    "Performing server-side file validation",
+    "Processing file metadata",
+    "Storing the file in the database",
+    "Saving file details successfully"
+  ],
+  "obj": [
+    "Validating the selected file type",
+    "Preparing the file for cloud storage",
+    "Performing server-side file validation",
+    "Generating a unique object name",
+    "Connecting to Backblaze Object Storage",
+    "Uploading the file to Backblaze",
+    "Verifying the cloud upload",
+    "Storing object metadata in the database"
+  ]
+}

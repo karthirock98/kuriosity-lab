@@ -73,3 +73,6 @@ export const generatePillPositions = (items: typeof transmitters) => {
     return { ...item, id, x, y };
   });
 };
+
+
+export const intentionalSleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
