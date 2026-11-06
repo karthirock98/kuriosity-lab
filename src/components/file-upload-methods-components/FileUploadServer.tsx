@@ -5,7 +5,7 @@ import serverContent from "@/assets/content/server-upload.md?raw";
 import FileDropBox from "./FileDropBox";
 import ZigzagProgress from "./Zigzagprogress";
 import {
-  fileStatusService,
+  fileStatusServices,
   getImageById,
   uploadImageApi,
   useFileStatusMsgProcess,
@@ -39,11 +39,13 @@ const initialElementAnimation: ElementAnimation = {
 type BoxName = keyof ElementAnimation;
 type ElementName = keyof ElementAnimation["server"];
 
+const fileStatusService = fileStatusServices.server;
+
 const animClass = (v: Visibility) =>
   v === "in" ? "fade-in" : v === "out" ? "fade-out" : "hidden";
 
 const FileUploadServer = () => {
-  const messages = useFileStatusMsgProcess();
+  const messages = useFileStatusMsgProcess("server");
   const [element, setElementAnimation] = useState<ElementAnimation>({
     server: {
       uploadBtn: "in", // fades in on load
@@ -74,29 +76,35 @@ const FileUploadServer = () => {
   const [uploadFailed, setUploadFailed] = useState<boolean>(false);
 
   const upload = async () => {
-    fileStatusService.updateStatus(1, "processing");
-    await intentionalSleep(1500);
-    const payload = new FormData();
-    if (selectedFile) {
-      fileStatusService.updateStatus(1, "completed");
-      fileStatusService.updateStatus(2, "processing");
+    try {
+      fileStatusService.updateStatus(1, "processing");
       await intentionalSleep(1500);
-      fileStatusService.updateStatus(2, "completed");
-      payload.append("image", selectedFile);
-      const response = await uploadImageApi(payload, "server");
-      console.log(response);
-      if (response) {
-        const image = await getImageById(response.data?.insertId);
-        if (image) {
-          const url = URL.createObjectURL(image);
-          setUploadedImage(url);
+      const payload = new FormData();
+      if (selectedFile) {
+        fileStatusService.updateStatus(1, "completed");
+        fileStatusService.updateStatus(2, "processing");
+        await intentionalSleep(1500);
+        fileStatusService.updateStatus(2, "completed");
+        payload.append("image", selectedFile);
+        const response = await uploadImageApi(payload, "server");
+        console.log(response);
+        if (response) {
+          const image = await getImageById(response.data?.insertId);
+          if (image) {
+            const url = URL.createObjectURL(image);
+            setUploadedImage(url);
+          }
+          changeElementVisibility("server", "progressBox", "out");
+          setTimeout(() => {
+            changeElementVisibility("server", "resultBox", "in");
+            fileStatusService.reset();
+          }, 1000);
         }
-        changeElementVisibility("server", "progressBox", "out");
-        setTimeout(() => {
-          changeElementVisibility("server", "resultBox", "in");
-          fileStatusService.reset();
-        }, 1000);
       }
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      fileStatusService.failCurrentStep(error);
+      setUploadFailed(true);
     }
   };
 
@@ -107,6 +115,8 @@ const FileUploadServer = () => {
       step: number;
       status: FileStatusMessage["status"];
     }) => {
+      // all upload sections listen on this event, so handle only our own mode
+      if (data.mode !== "server") return;
       console.log("Received:", data);
       fileStatusService.updateStatus(data.step, data.status);
       if (data.status === "failed") {
@@ -124,6 +134,7 @@ const FileUploadServer = () => {
   const resetAll = () => {
     setUploadedImage(null);
     setSelectedFile(null);
+    setUploadFailed(false);
     changeElementVisibility("server", "resultBox", "out");
     setTimeout(() => {
       changeElementVisibility("server", "uploadBtn", "in");
@@ -171,6 +182,7 @@ const FileUploadServer = () => {
 
       <div className={animClass(element.server.uploadBox)} onClick={() => {}}>
         <FileDropBox
+          selectedFile={selectedFile}
           onBack={() => {
             changeElementVisibility("server", "uploadBox", "out");
             setTimeout(() => {
@@ -178,11 +190,11 @@ const FileUploadServer = () => {
             }, 1000);
           }}
           onProceed={() => {
+            fileStatusService.initialize(allmessages.server);
             upload();
             changeElementVisibility("server", "progressBox", "in");
             setTimeout(() => {
               changeElementVisibility("server", "uploadBox", "out");
-              fileStatusService.initialize(allmessages.server);
             }, 500);
           }}
           onFileSelect={(file) => {

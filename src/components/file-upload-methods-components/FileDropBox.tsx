@@ -1,19 +1,19 @@
 import "@/assets/css/file-drop-box.scss";
-import { useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import FileDetailsCard from "./FileDetailsCard";
 
 function FileDropBox({
+  selectedFile,
   onBack,
   onFileSelect,
   onProceed,
 }: {
+  selectedFile: File | null;
   onBack: () => void;
-  onFileSelect: (file: File) => void;
+  onFileSelect: (file: File | null) => void;
   onProceed: () => void;
 }) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   return (
     <>
       {selectedFile && (
@@ -41,7 +41,6 @@ function FileDropBox({
                 const file = e.target.files?.[0];
 
                 if (file) {
-                  setSelectedFile(file);
                   onFileSelect(file);
                 }
               }}
@@ -56,7 +55,7 @@ function FileDropBox({
         <>
           <div className="mt-2">
             <FileDetailsCard
-              deleteFile={() => setSelectedFile(null)}
+              deleteFile={() => onFileSelect(null)}
               name={selectedFile.name}
               size={selectedFile.size}
               type={selectedFile.type}

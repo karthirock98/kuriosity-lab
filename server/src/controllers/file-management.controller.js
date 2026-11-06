@@ -8,34 +8,53 @@ import { fileControllerSocketMessages } from "../services/file-management-socket
 import { intentionalSleep } from "../helpers/generic-helper.js";
 
 export const saveImageinDb = async (req, res) => {
-  try {
-    const socketId = getSocketId(req.auth?.username);
-    if (socketId) {
-      await fileControllerSocketMessages(socketId, 0, "db");
-      await intentionalSleep(2000);
-    }
-    if (req?.file) {
-      if (socketId) {
-        await fileControllerSocketMessages(socketId, 1, "db");
-        await intentionalSleep(1000);
-      }
-      const fileName = req.file.originalname.replace(
-        req.file.originalname.split(".").pop(),
-        req.file.mimetype.split("/").pop(),
-      );
+  const socketId = getSocketId(req.auth?.username);
+  const storage = "db";
 
-      const imageDbPayload = {
-        name: fileName,
+  try {
+    // Step 3: Server validation
+    await runProcessingStep(socketId, storage, 3, async () => {
+      if (!req.file) {
+        throw new Error("No file uploaded");
+      }
+    });
+
+    // Step 4: Process file metadata
+    const imageDbPayload = await runProcessingStep(
+      socketId,
+      storage,
+      4,
+      async () => ({
+        name: req.file.originalname.replace(
+          /\.[^.]+$/,
+          `.${req.file.mimetype.split("/").pop()}`,
+        ),
         mimetype: req.file.mimetype,
         buffer: req.file.buffer,
-      };
+      }),
+    );
 
-      const response = await imageDbModel.storeImage(imageDbPayload, socketId);
-      res.status(200).json(response);
-    }
+    // Step 5: Store file in DB
+    const response = await runProcessingStep(socketId, storage, 5, async () => {
+      return await imageDbModel.storeImage(imageDbPayload);
+    });
+
+    // Step 6: Confirm the file details were saved
+    await runProcessingStep(socketId, storage, 6, async () => {
+      if (!response?.insertId) {
+        throw new Error("Image record was not saved");
+      }
+    });
+
+    res.status(200).json(response);
   } catch (error) {
-    res.status(500).json(createResponse(500, "", "Something Went Wrong!", ""));
-    throw error;
+    console.error("Image upload failed:", error);
+
+    if (!res.headersSent) {
+      res
+        .status(500)
+        .json(createResponse(500, "", "Something Went Wrong!", ""));
+    }
   }
 };
 
@@ -103,23 +122,62 @@ export const saveImageinServer = async (req, res) => {
 };
 
 export const saveFileInCloudService = async (req, res) => {
+  const socketId = getSocketId(req.auth?.username);
+  const storage = "obj";
+
   try {
-    const fileName = req.file.originalname.replace(
-      req.file.originalname.split(".").pop(),
-      req.file.mimetype.split("/").pop(),
-    );
-    const objResponse = await backBlazeClient.uploadFile({
-      name: fileName,
-      buffer: req.file.buffer,
-      mime_type: req.file.mimetype,
+    // Step 3: Server validation
+    await runProcessingStep(socketId, storage, 3, async () => {
+      if (!req.file) {
+        throw new Error("No file uploaded");
+      }
     });
-    const imageDbPayload = {
-      name: fileName,
-      mimetype: req.file.mimetype,
-      path: objResponse.fileId,
-      mode: "obj",
-    };
-    const response = await imageDbModel.storeImagePath(imageDbPayload);
+
+    // Step 4: Generate a unique object name
+    const fileName = await runProcessingStep(socketId, storage, 4, async () => {
+      const extension = req.file.mimetype.split("/").pop();
+      return `${crypto.randomUUID()}.${extension}`;
+    });
+
+    // Step 5: Connect to Backblaze
+    await runProcessingStep(socketId, storage, 5, async () => {
+      // the client authorizes when back-blaze-client.js loads, so this step
+      // only marks the stage for the progress UI
+    });
+
+    // Step 6: Upload to Backblaze
+    const objResponse = await runProcessingStep(
+      socketId,
+      storage,
+      6,
+      async () => {
+        return await backBlazeClient.uploadFile({
+          name: fileName,
+          buffer: req.file.buffer,
+          mime_type: req.file.mimetype,
+        });
+      },
+    );
+
+    // Step 7: Verify the cloud upload
+    await runProcessingStep(socketId, storage, 7, async () => {
+      if (!objResponse?.fileId) {
+        throw new Error("Backblaze did not return a file id");
+      }
+    });
+
+    // Step 8: Store object metadata in DB
+    const response = await runProcessingStep(socketId, storage, 8, async () => {
+      const imageDbPayload = {
+        name: fileName,
+        mimetype: req.file.mimetype,
+        path: objResponse.fileId,
+        mode: storage,
+      };
+
+      return await imageDbModel.storeImagePath(imageDbPayload);
+    });
+
     res
       .status(200)
       .json(
@@ -131,8 +189,13 @@ export const saveFileInCloudService = async (req, res) => {
         ),
       );
   } catch (error) {
-    res.status(500).json(createResponse(500, "", "Something Went Wrong!", ""));
-    throw error;
+    console.error("Image upload failed:", error);
+
+    if (!res.headersSent) {
+      res
+        .status(500)
+        .json(createResponse(500, "", "Something Went Wrong!", ""));
+    }
   }
 };
 
